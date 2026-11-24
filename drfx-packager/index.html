@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>DRFX Packager</title>
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎁</text></svg>" >
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+    <style>
+
+        :root {
+            --main-bg-color: #ebebeb;
+            --second-bg-color: #f7f7f7;
+            --third-bg-color: #d3d3d3;
+            --main-border-color: #9b9b9b;
+            --main-hover-color: #e6e6e7;
+        }
+
+        *, *:before, *:after {
+            box-sizing: inherit;
+            margin: 0px;
+        }
+
+        body {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            max-width: 900px;
+            margin: 0px auto;
+            background-color: var(--main-bg-color);
+            /* padding: 30px; marges internes */
+            /* margin: 0px; marges externes */
+        }
+        p, a {
+            font-size: 14cpx;
+        }
+        .center {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            /* width: 50%; */
+        }
+        .hidden {
+            display: none !important;
+        }
+
+        input[type="text"],
+        select {
+            padding: 8px;
+            min-width: 0px;
+            font-size: medium;
+            border: 1px solid var(--main-border-color);
+            background-color: var(--second-bg-color);
+        }
+
+        /* GUIDE TO FLEX : https://css-tricks.com/snippets/css/a-guide-to-flexbox/ */
+        .flex-row {
+            display: flex;
+            flex-direction: row ;
+            align-items: stretch;
+        }
+        .flex-column {
+            display: flex;
+            flex-direction: column ;
+            align-items: stretch;
+        }
+        .flex {
+            display: flex;
+            align-items: stretch;
+        }
+        .flex-center {
+            align-items: center;
+            justify-content: center;
+        }
+
+
+        #help-open,
+        #help-close {
+            justify-content:center; 
+            align-items: center; 
+            width: 20px; 
+            height: 20px; 
+            background: var(--third-bg-color); 
+            border-radius: 10px; 
+            margin-bottom: 3px; 
+            cursor: pointer;
+        }
+        #help-open:hover {
+            opacity: 0.5;
+        }
+
+
+        .dropZone {
+            border: 1px dashed var(--main-border-color);
+            background: var(--second-bg-color);
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            flex: 1;
+        }
+        .dropZone:hover,
+        .dropZone.drag {
+            background: var(--main-hover-color);
+        }
+
+        .fileInfo {
+            font-size: small;
+        }
+
+        .fileInfo img {
+            max-height: 60px;
+            max-width: 60px;
+            border: 1px solid var(--main-border-color);
+            background: #28282E;
+        }
+
+        #pathPreview {
+            padding: 10px 14px;
+            border: 1px solid var(--main-border-color);
+            background: var(--second-bg-color);
+            overflow-wrap: anywhere;
+        }
+
+        #pathPreview code {
+            font-family: Consolas, monospace;
+        }
+
+        button {
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: var(--second-bg-color);
+            border: 1px solid var(--main-border-color);
+        }
+        button:disabled {
+            opacity: 0.8;
+            cursor: not-allowed;
+        }
+
+        #log {
+            border: 1px solid var(--main-border-color);
+            background: var(--second-bg-color);
+            padding: 10px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            font-family: Consolas, monospace;
+            font-size: small;
+        }
+
+        #help {
+            z-index: 1;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:rgba(0,0,0,.5);
+            backdrop-filter:blur(10px);
+            padding: 40px;
+        }
+        #help-content {
+            width: 100%;
+            max-width: 700px;
+            height: 100%;
+            margin: 0 auto;
+            padding: 30px;
+            background-color: white;
+            border-radius: 20px;
+        }
+        #help-content code {
+            font-family: monospace;
+            font-size: inherit;
+            background: #f0f0f0;
+            padding: 2px 5px;
+            border-radius: 3px;
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+
+    
+    <!-- =============== -->
+    <!-- 📂 DROPZONE 📂 -->
+    <!-- =============== -->
+
+    <div id="globalDropOverlay" class="flex-row hidden" style="align-items:center; background: #0000006b; z-index: 2; position: fixed; top: 0; left: 0; width: 100%; height: 100%;">
+        <div class="center flex-column" style="padding: 100px; border-radius: 10px; background: #ececec; align-items: center; gap:10px">
+            <h1>📂</h1>
+            <h2>Drop your files anywhere</h2>
+            <p><i>(Supports <b>.setting</b> and <b>.png</b> files)</i></p>
+        </div>
+    </div>
+
+    <!-- ========== -->
+    <!-- 💪 BODY 💪 -->
+    <!-- ========== -->
+
+    <div class="flex-column" style="gap: 30px; padding: 30px; max-height: 100vh; min-height: 100vh; z-index: auto;">
+    
+        <div class="flex-row" style="align-items: flex-end; gap: 10px;">
+            <h1 style="cursor: default">DRFX Packager</h1>
+            <div style="flex:1"></div>
+            <h1 style="font-weight: 100; font-size: x-large; cursor: default;"><i>from .setting to .drfx</i></h1>
+            <p id="help-open" class="flex"><i>?</i></p>
+        </div>
+
+        <div class="flex-row" style="gap: 20px;">
+            <div id="settingDrop" class="dropZone flex-column flex-center">
+                <div class="dropZoneDefault">
+                    Drop a .setting MACRO file here<br>
+                    or click to browse
+                </div>
+                <div id="settingFileInfo" class="fileInfo" style="display:none;"></div>
+            </div>
+
+            <div id="previewDrop" class="dropZone flex-column flex-center">
+                <div class="dropZoneDefault">
+                    Drop preview .png here<br>
+                    or click to browse
+                </div>
+                <div id="previewFileInfo" class="fileInfo flex-column flex-center" style="gap: 5px; display:none;">
+                    <img id="previewThumb" src="" alt="">
+                    <span id="previewFileName"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex-row" style="gap: 8px;">
+
+            <div class="flex-column" style="gap: 5px; width: 130px;">
+                <p style="white-space: nowrap">🏠</p> 
+                <select id="packageBase">
+                    <option value="Generators">Generators</option>
+                    <option value="Titles" default>Titles</option>
+                </select>
+            </div>
+
+            <div class="flex-column" style="gap: 5px; width: 130px;">
+                <p style="white-space: nowrap;">Main folder 📒</p> 
+                <input id="mainFolderInput" type="text" value="RTS" placeholder="RTS">
+            </div>
+
+            <div class="flex-column" style="gap: 5px; flex: 1">
+                <p style="white-space: nowrap">Show name 📁</p> 
+                <input id="showNameInput" type="text" value="Show" placeholder="Show name">
+            </div>
+
+            <div class="flex-column" style="gap: 5px; flex: 1">
+                <p style="white-space: nowrap">Template Name 📃</p> 
+                <input id="templateNameInput" type="text" value="Template" placeholder="Template name">
+            </div>
+        </div>
+
+        <!-- Updated live as the user edits any of the four fields. -->
+        <div id="pathPreview" aria-live="polite" style="line-height: 22px">
+            <strong>Package path:</strong>
+            <code id="pathPreviewPath">Generators/RTS/Show/Show_TEMPLATE</code>
+            <br>
+            <strong>Output file name:</strong>
+            <code id="pathPreviewFilename">Show_TEMPLATE.drfx</code>
+        </div>
+
+        <div class="flex-row center" style="gap: 10px;">
+            <button id="buildButton" style="width: 150px" disabled>Build DRFX ⚙️</button>
+            <button id="resetButton" style="width: 150px" disabled>Reset 🔄️</button>
+        </div>
+
+        <div id="log" style="flex: 1; overflow-y: scroll; word-wrap: break-word;"></div>
+
+    </div>
+
+    <!-- HIDDEN FILE INPUT -->
+    <input id="settingInput" type="file" accept=".setting" hidden>
+    <input id="previewInput" type="file" accept=".png" hidden>
+
+    <!-- =========== -->
+    <!-- ❓ HELP ❓ -->
+    <!-- =========== -->
+
+    <div id="help" class="flex-column hidden">
+        <div id="help-content" class="flex-column" style="gap: 20px;">
+
+            <div class="flex-row">
+                <h1>How it works</h1>
+                <div style="flex:1"></div>
+                <p id="help-close" class="flex">X</p>
+            </div>
+
+            <div class="flex-column" style="gap: 35px; overflow-y: auto;">
+                
+                <div class="flex-column" style="gap: 15px;">
+                    <p>
+                        This tool converts a DaVinci Resolve Fusion macro (<code>.setting</code>) into a <code>.drfx</code> package.
+                        This helps for all the manual steps of packaging the code and the assets. without the need to manually change the <code>.setting</code> file.
+                    </p>
+                    <p><b>Make sure this <code>.html</code> is executed locally</b> (assets gathering will fail for security reasons).</p>
+                </div>
+
+                <div class="flex-column" style="gap: 15px;">
+                    <h2>1. Export your macro</h2>
+                    <p>
+                        Select all the nodes and leave all outputs checked. 
+                        (the packager will clean up the outputs and redirect the final output 
+                        to the node connected to the <code>MediaOut</code> node)
+                    </p>
+                    <p>
+                        Save your macro as a <code>.setting</code> file.
+                    </p>
+                    <div class="flex-column" style="gap: 10px;">
+                        <p>Do not include the show name in the filename, as the packager adds it automatically.</p>
+                        <table>
+                            <thead>
+                                <tr style="text-align: left; font-size: small;">
+                                    <th>Show</th>
+                                    <th>Setting file</th>
+                                    <th>Resulting DRFX file</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="font-size: small;">"Vraiment"</td>
+                                    <td><code>synthe-nom.setting</code></td>
+                                    <td><code>Vraiment_SYNTHE-NOM.drfx</code> ✅</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size: small;">"Vraiment"</td>
+                                    <td><code>Vraiment-synthe-nom.setting</code></td>
+                                    <td><code>Vraiment_VRAIMENT-SYNTHE-NOM.drfx</code> 😱</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="flex-column" style="gap: 15px;">
+                    <h2>2. Check external assets</h2>
+                    <p>When asked, select the folder containing the referenced assets. You can select a parent folder; the packager will scan it and its subfolders for matching PNG files.</p>
+                </div>
+
+                <div class="flex-column" style="gap: 15px;">
+                    <h2>3. Optional preview image</h2>
+                    <p>You can provide a PNG preview image for the template. The packager resizes it to 104 pixels wide while preserving its aspect ratio, then includes it in the package.</p>
+                </div>
+
+                <div class="flex-column" style="gap: 15px;">
+                    <h2>Understand what the packager does.</h2>
+                    <ul class="flex-column" style="gap: 5px;">
+                        <li>Renames the macro's internal tool identifier to match the generated template name.</li>
+                        <li>Rewrites recognized external asset paths to use the package's asset folder.</li>
+                        <li>Cleans up the macro's outputs.</li>
+                        <li>Organizes the macro and its assets into the <code>.drfx</code> package structure.</li>
+                        <li>Includes the optional preview image, if provided.</li>
+                    </ul>
+                </div>
+
+
+            </div>
+            
+        </div>
+    </div>
+
+    <!-- ============= -->
+    <!-- 🧰 SCRIPTS 🧰 -->
+    <!-- ============= -->
+
+    <script>
+
+        // LOG OPEN / CLOSE
+        const help = document.getElementById("help");
+        const helpOpen = document.getElementById("help-open");
+        const helpClose = document.getElementById("help-close");
+        helpOpen.addEventListener("click", () => { help.classList.remove("hidden"); });
+        helpClose.addEventListener("click", () => { help.classList.add("hidden"); });
+        help.addEventListener("click", () => { help.classList.add("hidden"); });
+
+
+        let settingFile = null;
+        let settingPreviewFile = null;
+
+        const settingDrop = document.getElementById("settingDrop");
+        const settingInput = document.getElementById("settingInput");
+        const settingFileInfo = document.getElementById("settingFileInfo");
+        const settingDefault = settingDrop.querySelector(".dropZoneDefault");
+
+        const globalDropOverlay = document.getElementById("globalDropOverlay");
+
+        const previewDrop = document.getElementById("previewDrop");
+        const previewInput = document.getElementById("previewInput");
+        const previewFileInfo = document.getElementById("previewFileInfo");
+        const previewDefault = previewDrop.querySelector(".dropZoneDefault");
+        const previewThumb = document.getElementById("previewThumb");
+        const previewFileName = document.getElementById("previewFileName");
+
+        const templateNameInput = document.getElementById("templateNameInput");
+        const mainFolderInput = document.getElementById("mainFolderInput");
+        const showNameInput = document.getElementById("showNameInput");
+        const pathPreviewPath = document.getElementById("pathPreviewPath");
+        const pathPreviewFilename = document.getElementById("pathPreviewFilename");
+
+        const buildButton = document.getElementById("buildButton");
+        const resetButton = document.getElementById("resetButton");
+        const logDiv = document.getElementById("log");
+        const packageBase = document.getElementById("packageBase");
+
+        // Default values used if a text field is left empty when it loses focus.
+        const DEFAULT_MAIN_FOLDER = "RTS";
+        const DEFAULT_SHOW_NAME = "Show";
+        const DEFAULT_TEMPLATE_NAME = "Template";
+
+        // Restore the previously selected base/main folder for convenience.
+        // Keep compatibility with the previous version's saved localStorage key.
+        const savedBase = localStorage.getItem("drfx_packageBase");
+        const savedMainFolder = localStorage.getItem("drfx_packageSubPath");
+        const savedShowNameInput = localStorage.getItem("drfx_packageShowNameInput");
+        if (savedBase) packageBase.value = savedBase;
+        if (savedMainFolder) mainFolderInput.value = savedMainFolder;
+        if (savedShowNameInput) showNameInput.value = savedShowNameInput;
+        document.querySelectorAll(atob("aDE=")).forEach(e=>e.title=atob("Q29kZWQgYnkgVGhlbyBGcmFuY2FydCBAIFJUUyAtIFJhZGlvIFRlbGV2aXNpb24gU3Vpc3Nl"));
+
+        // Persist only the base and main folder, as in the previous version.
+        function savePackagePath() {
+            localStorage.setItem("drfx_packageBase", packageBase.value);
+            localStorage.setItem("drfx_packageSubPath", mainFolderInput.value);
+            localStorage.setItem("drfx_packageShowNameInput", showNameInput.value);
+        }
+
+
+        /*
+         * Normalize a name for use as a folder/template component.
+         * - Convert accented characters to their unaccented equivalents.
+         * - Convert dots to hyphens (e.g. 36.9 -> 36-9).
+         * - Remove other punctuation/special characters.
+         * - Convert whitespace-separated words to PascalCase.
+         * The input element itself is never rewritten by this function.
+         */
+        function toPascalCase(value) {
+            // A temporary marker lets us preserve dots as hyphens while
+            // removing every other punctuation character (including typed hyphens).
+            const dotMarker = "\uE000";
+            const ascii = String(value)
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/\./g, dotMarker)
+                .replace(new RegExp(`[^a-zA-Z0-9\\s${dotMarker}]`, "g"), " ");
+
+            return ascii
+                .trim()
+                .split(/\s+/)
+                .filter(Boolean)
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+                .join("")
+                .replace(new RegExp(dotMarker, "g"), "-");
+        }
+
+        /*
+         * Normalize the user-entered template name.
+         * Separators and punctuation become a single hyphen, accents are
+         * removed, and the result is uppercase (e.g. "synthe nom" -> "SYNTHE-NOM").
+         */
+        function toTemplateSlug(value) {
+            return String(value)
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/\./g, "-")
+                .replace(/[^a-zA-Z0-9]+/g, "-")
+                .replace(/^-+|-+$/g, "")
+                .toUpperCase();
+        }
+
+        // Derive every final name/path from the raw inputs in one place.
+        // This keeps the preview and the generated package in sync.
+        function getPackageNames() {
+            const base = packageBase.value;
+            const mainFolder = mainFolderInput.value.toUpperCase() || DEFAULT_MAIN_FOLDER;
+            const showName = toPascalCase(showNameInput.value) || DEFAULT_SHOW_NAME;
+            const templateSlug = toTemplateSlug(templateNameInput.value) || DEFAULT_TEMPLATE_NAME.toUpperCase();
+            const macroName = `${showName}_${templateSlug}`;
+            // packagePath is the directory that contains the template files.
+            // The final macroName is the filename/component shown after it in
+            // the preview, not an extra directory containing another copy.
+            const packagePath = `${base}/${mainFolder}/${showName}`;
+
+            return { base, mainFolder, showName, templateSlug, macroName, packagePath };
+        }
+
+        // Refresh the visible preview without modifying any input's contents.
+        function updatePathPreview() {
+            const names = getPackageNames();
+            pathPreviewPath.textContent = `/${names.packagePath}/${names.macroName}`.replaceAll('/', ' / ');
+            pathPreviewFilename.textContent = `${names.macroName}.drfx`;
+        }
+
+        // Empty values are restored to their defaults only on blur. Non-empty
+        // values remain exactly as the user typed them.
+        function restoreDefaultIfEmpty(input, defaultValue) {
+            if (!input.value.trim()) input.value = defaultValue;
+            updatePathPreview();
+            savePackagePath();
+        }
+
+        packageBase.addEventListener("change", () => {
+            savePackagePath();
+            updatePathPreview();
+        });
+        mainFolderInput.addEventListener("input", () => {
+            mainFolderInput.value = mainFolderInput.value.split("/")[0].trim();
+            savePackagePath();
+            updatePathPreview();
+        });
+        mainFolderInput.addEventListener("blur", () => restoreDefaultIfEmpty(mainFolderInput, DEFAULT_MAIN_FOLDER));
+        showNameInput.addEventListener("input", () => {
+            showNameInput.value = showNameInput.value.split("/")[0].trim();
+            updatePathPreview();
+        });
+        showNameInput.addEventListener("blur", () => restoreDefaultIfEmpty(showNameInput, DEFAULT_SHOW_NAME));
+        templateNameInput.addEventListener("input", updatePathPreview);
+        templateNameInput.addEventListener("blur", () => restoreDefaultIfEmpty(templateNameInput, DEFAULT_TEMPLATE_NAME));
+
+        // Render the initial preview after restoring saved preferences.
+        updatePathPreview();
+
+        // Helper function to show the log in the dedicated html part
+        function log(message) {
+            logDiv.textContent += message + "\n";
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        // Generic drop handler
+        function setupDropZone(zone, input, callback) {
+
+            zone.addEventListener("click", () => input.click());
+
+            input.addEventListener("change", e => {
+                callback(e.target.files[0]);
+            });
+
+            zone.addEventListener("dragover", e => {
+                e.preventDefault();
+                zone.classList.add("drag");
+            });
+
+            zone.addEventListener("dragleave", () => {
+                zone.classList.remove("drag");
+            });
+
+            zone.addEventListener("drop", e => {
+                e.preventDefault();
+                e.stopPropagation();
+                zone.classList.remove("drag");
+                callback(e.dataTransfer.files[0]);
+            });
+        }
+
+        // Global drop handler — accepts files anywhere in the window
+        window.addEventListener("dragover", e => {
+            e.preventDefault();
+            if (e.dataTransfer.types.includes("Files")) {
+                globalDropOverlay.classList.remove("hidden");
+            }
+        });
+
+        // Hide only when leaving the actual window
+        window.addEventListener("dragleave", e => {
+            if (
+                e.clientX <= 0 ||
+                e.clientY <= 0 ||
+                e.clientX >= window.innerWidth ||
+                e.clientY >= window.innerHeight
+            ) {
+                globalDropOverlay.classList.add("hidden");
+            }
+        });
+
+        window.addEventListener("drop", e => {
+            e.preventDefault();
+            globalDropOverlay.classList.add("hidden");
+
+            const files = [...e.dataTransfer.files];
+
+            for (const file of files) {
+                const extension = file.name.split(".").pop().toLowerCase();
+
+                if (extension === "setting") {
+                    loadSetting(file);
+                } else if (extension === "png") {
+                    loadPreview(file);
+                } else {
+                    log(`❌ Unsupported file extension : .${extension}`)
+                }
+            }
+        });
+
+        // Load .setting
+        // Reads the file, shows its name in the drop zone, then tries to
+        // extract the internal Fusion tool name so it can be displayed
+        // (and edited) in the "Template Name" field before building.
+        async function loadSetting(file) {
+
+            if (!file || !file.name.toLowerCase().endsWith(".setting")) {
+                alert("Only .setting files are accepted.");
+                return;
+            }
+
+            settingFile = file;
+            log("📸 Setting file added: " + file.name);
+
+            settingDefault.style.display = "none";
+            settingFileInfo.style.display = "flex";
+            settingFileInfo.textContent = "📃 " + file.name;
+
+            // deduce by the name of the file
+            templateNameInput.value = file.name.split('.setting')[0];
+            updatePathPreview();
+
+            buildButton.disabled = false;
+            resetButton.disabled = false;
+        }
+
+        // Load preview
+        // . png file
+        function loadPreview(file) {
+
+            if (!file || !file.name.toLowerCase().endsWith(".png")) {
+                alert("Only PNG files are accepted.");
+                return;
+            }
+
+            settingPreviewFile = file;
+            log("📃 Preview file added: " + file.name);
+
+            previewDefault.style.display = "none";
+            previewFileInfo.style.display = "flex";
+            previewThumb.src = URL.createObjectURL(file);
+            previewFileName.textContent = "📸 " + file.name;
+
+            resetButton.disabled = false;
+        }
+
+        // Reset everything
+        function resetAll() {
+            settingFile = null;
+            settingPreviewFile = null;
+
+            settingInput.value = "";
+            previewInput.value = "";
+
+            settingDefault.style.display = "block";
+            settingFileInfo.style.display = "none";
+            settingFileInfo.textContent = "";
+
+            previewDefault.style.display = "block";
+            previewFileInfo.style.display = "none";
+            if (previewThumb.src) URL.revokeObjectURL(previewThumb.src);
+            previewThumb.src = "";
+            previewFileName.textContent = "";
+
+            // Reset the editable naming fields to their documented defaults.
+            // mainFolderInput.value = DEFAULT_MAIN_FOLDER;
+            // showNameInput.value = DEFAULT_SHOW_NAME;
+            templateNameInput.value = DEFAULT_TEMPLATE_NAME;
+            savePackagePath();
+            updatePathPreview();
+
+            buildButton.disabled = true;
+            resetButton.disabled = true;
+
+            logDiv.textContent = "";
+        }
+        resetButton.addEventListener("click", resetAll);
+
+        // Initialize drop down zones zones
+        setupDropZone(settingDrop, settingInput, loadSetting);
+        setupDropZone(previewDrop, previewInput, loadPreview);
+
+        // Helper function to find the most common folder
+        function commonRoot(paths) {
+            if (!paths.length) return "";
+            const split = paths.map(path =>
+                path.replace(/\//g, "\\").split("\\")
+            );
+            const root = [];
+            for (let i = 0; ; i++) {
+                const part = split[0][i];
+                if (part === undefined) break;
+                if (split.every(p => p[i] === part))
+                    root.push(part);
+                else
+                    break;
+            }
+            return root.join("\\");
+        }
+
+        buildButton.addEventListener("click", async () => {
+
+            if (!settingFile) {
+                alert("Please load a .setting file first.");
+                return;
+            }
+
+            // Use the same normalized values displayed in the live preview.
+            // This guarantees that the folder structure, assets, preview image,
+            // setting filename, and downloaded DRFX all share one macro name.
+            const { macroName, packagePath } = getPackageNames();
+
+            log(`Starting to build ${macroName}.drfx`)
+
+            let macroSettingFile = await settingFile.text();
+
+            const filenameRegex = /Filename\s*=\s*"([^"]+)"/g;
+            const matches = [...macroSettingFile.matchAll(filenameRegex)];
+
+            if (!matches.length) {
+                log("No assets needed.");
+            }
+
+            const folderCount = new Map();
+            const assets = [];
+            const fileMap = new Map();
+
+            for (const match of matches) {
+
+                const assetPath = match[1];
+
+                const fileName = assetPath.split(/[\\/]/).pop();
+                const folder = assetPath.replace(/[\\/][^\\/]+$/, "");
+
+                if (!fileName.toLowerCase().endsWith(".png")) {
+                    log("WARNING - Unsupported asset: " + assetPath);
+                    continue;
+                }
+
+                assets.push({
+                    original: assetPath,
+                    folder,
+                    fileName
+                });
+
+                folderCount.set(
+                    folder,
+                    (folderCount.get(folder) || 0) + 1
+                );
+
+                macroSettingFile = macroSettingFile.replace(
+                    match[0],
+                    `Filename = "Setting:\\\\${macroName}Assets\\\\${fileName}"`
+                );
+
+            }
+
+            if(assets.length>0) {
+
+                log(`Assets in ${assets.length} nodes.`);
+
+                const rootFolder = commonRoot([...folderCount.keys()]);
+
+                log("Most common root: " + rootFolder);
+
+                const isSafe = window.isSecureContext
+                console.log("window.isSecureContext : " + window.isSecureContext);
+
+                if(!isSafe) {
+                    log("⚠️ window.isSecureContext is not TRUE. Run this script localy.");
+                    return;
+                }
+
+                alert(
+                    "Most common root: " + rootFolder +
+                    "\n\nPlease select this folder and grant access to it."
+                );
+
+                log("Waiting for access...")
+
+                //
+                // Ask the user for the asset directory.
+                // Browsers cannot enumerate arbitrary folders without permission,
+                // so we let the user pick the root folder once.
+                //
+
+                let rootHandle;
+
+                try {
+                    rootHandle = await window.showDirectoryPicker({
+                        mode: "read"
+                    });
+                    // console.log("Selected:", rootHandle.name);
+                    // const permission = await rootHandle.queryPermission({
+                    //     mode: "read"
+                    // });
+                    // console.log("Permission:", permission);
+                } catch (err) {
+                    log('Error');
+                    log(err);
+                    console.error(err);
+                }
+
+
+                //
+                // Build a lookup of every PNG inside that folder.
+                //
+
+                async function scan(dirHandle, relative = "") {
+                    for await (const [name, handle] of dirHandle.entries()) {
+                        if (handle.kind === "directory") {
+                            await scan(handle, relative + name + "/");
+                        } else {
+                            fileMap.set(name.toLowerCase(), handle);
+                        }
+                    }
+                }
+
+                log("Scanning folder...");
+                await scan(rootHandle);
+
+                log("Found " + fileMap.size + " files.");
+
+            }
+
+            // Clean the NAME
+            // ----------------------------
+
+            let originalToolName = macroSettingFile.match(
+                /Tools\s*=\s*ordered\(\)\s*\{\s*(\w+)\s*=\s*MacroOperator/
+            );
+
+            if (originalToolName) {
+                originalToolName = originalToolName[1];
+                // removes '-'
+                let internalToolName = macroName.replaceAll('-', '');
+                // make sure it does not start with a digit
+                internalToolName = /^\d/.test(internalToolName) ? `_${internalToolName}` : internalToolName;
+
+                macroSettingFile = macroSettingFile.replaceAll(
+                    originalToolName,
+                    internalToolName
+                );
+            }
+
+            //
+            // Clean the Outputs
+            // ----------------------------
+/*
+            const mediaOutRegex = /(\w+)\s*=\s*MediaOut\s*\{/g;
+            const mediaOutMatches = [...macroSettingFile.matchAll(mediaOutRegex)];
+
+            if (mediaOutMatches.length === 1) {
+                log("A MediaOut node is here. Changing the output.");
+
+                // Using the braces to find the end of the node to remove.
+                const mediaOutName = mediaOutMatches[0][1];
+                const openBrace = macroSettingFile.indexOf("{", mediaOutMatches[0].index);
+
+                let depth = 0;
+                let closeBrace = -1;
+
+                for (let i = openBrace; i < macroSettingFile.length; i++) {
+                    if (macroSettingFile[i] === "{") depth++;
+                    if (macroSettingFile[i] === "}") depth--;
+
+                    if (depth === 0) {
+                        closeBrace = i;
+                        break;
+                    }
+                }
+
+                if (closeBrace !== -1) {
+                    // Capture the complete MediaOut node
+                    let end = closeBrace + 1;
+
+                    // Include the trailing comma and newline
+                    while (end < macroSettingFile.length && /[ \t]/.test(macroSettingFile[end])) end++;
+                    if (macroSettingFile[end] === ",") end++;
+                    if (macroSettingFile[end] === "\r") end++;
+                    if (macroSettingFile[end] === "\n") end++;
+
+                    const mediaOutContent = macroSettingFile.slice(openBrace, closeBrace + 1);
+                    const sourceOpMatch = mediaOutContent.match(/SourceOp\s*=\s*"([^"]+)"/);
+
+                    if (sourceOpMatch) {
+                        const sourceOp = sourceOpMatch[1];
+
+                        macroSettingFile =
+                            macroSettingFile.slice(0, mediaOutMatches[0].index) +
+                            macroSettingFile.slice(end);
+
+                        macroSettingFile = macroSettingFile.replace(
+                            /(MainOutput1\s*=\s*InstanceOutput\s*\{[\s\S]*?SourceOp\s*=\s*")[^"]+(")/,
+                            `$1${sourceOp}$2`
+                        );
+                    }
+                }
+            }
+            else if (mediaOutMatches.length > 1) {
+                log("⚠️ Multiple MediaOut are present. This might induce problems. Clean the .settings file.");
+                return;
+            }
+*/
+
+            //
+            // Clean the Outputs
+            // ----------------------------
+
+            const mediaOutRegex = /(\w+)\s*=\s*MediaOut\s*\{/g;
+            const mediaOutMatches = [...macroSettingFile.matchAll(mediaOutRegex)];
+
+            // Multiple MediaOut nodes: stop without modifying anything.
+            if (mediaOutMatches.length > 1) {
+                log("⚠️ Multiple MediaOut nodes are present. Clean the .settings file.");
+                return;
+            }
+
+            // Find the Outputs block.
+            const outputsMatch = macroSettingFile.match(/\bOutputs\s*=\s*\{/);
+            if (!outputsMatch) {
+                log("⚠️ No Outputs block found.");
+                return;
+            }
+
+            // Find the complete Outputs block using brace counting.
+            const outputsOpenBrace = macroSettingFile.indexOf("{", outputsMatch.index);
+            let outputsDepth = 0;
+            let outputsCloseBrace = -1;
+
+            for (let i = outputsOpenBrace; i < macroSettingFile.length; i++) {
+                if (macroSettingFile[i] === "{") outputsDepth++;
+                if (macroSettingFile[i] === "}") outputsDepth--;
+                if (outputsDepth === 0) {
+                    outputsCloseBrace = i;
+                    break;
+                }
+            }
+
+            if (outputsCloseBrace === -1) {
+                log("⚠️ Could not find the end of the Outputs block.");
+                return;
+            }
+
+            const outputsContent = macroSettingFile.slice(
+                outputsOpenBrace + 1,
+                outputsCloseBrace
+            );
+
+            // Extract the output entries.
+            const outputEntryRegex =
+                /(\w+)\s*=\s*InstanceOutput\s*\{/g;
+
+            const outputEntries = [...outputsContent.matchAll(outputEntryRegex)];
+
+            if (outputEntries.length === 0) {
+                log("⚠️ No InstanceOutput entries found.");
+                return;
+            }
+
+            // If there is no MediaOut and multiple outputs exist, leave unchanged.
+            if (mediaOutMatches.length === 0 && outputEntries.length > 1) {
+                log("⚠️ Multiple outputs found without a MediaOut. Leaving unchanged.");
+                return;
+            }
+
+            // Select MainOutput1 if present, otherwise the first entry.
+            const selectedOutput =
+                outputEntries.find(entry => entry[1] === "MainOutput1") ??
+                outputEntries[0];
+
+            // Find the complete selected InstanceOutput block.
+            const selectedOpenBrace = outputsOpenBrace + 1 +
+                outputsContent.indexOf("{", selectedOutput.index);
+
+            let selectedDepth = 0;
+            let selectedCloseBrace = -1;
+
+            for (let i = selectedOpenBrace; i < macroSettingFile.length; i++) {
+                if (macroSettingFile[i] === "{") selectedDepth++;
+                if (macroSettingFile[i] === "}") selectedDepth--;
+
+                if (selectedDepth === 0) {
+                    selectedCloseBrace = i;
+                    break;
+                }
+            }
+
+            if (selectedCloseBrace === -1) {
+                log("⚠️ Could not parse the selected output.");
+                return;
+            }
+
+            // Work on a temporary copy so failures do not partially modify the file.
+            let updatedSettingFile = macroSettingFile;
+
+            // If exactly one MediaOut exists, redirect the selected output.
+            if (mediaOutMatches.length === 1) {
+                const mediaOutName = mediaOutMatches[0][1];
+                const mediaOutStart = mediaOutMatches[0].index;
+                const mediaOutOpenBrace = macroSettingFile.indexOf("{", mediaOutStart);
+
+                let mediaOutDepth = 0;
+                let mediaOutCloseBrace = -1;
+
+                for (let i = mediaOutOpenBrace; i < macroSettingFile.length; i++) {
+                    if (macroSettingFile[i] === "{") mediaOutDepth++;
+                    if (macroSettingFile[i] === "}") mediaOutDepth--;
+
+                    if (mediaOutDepth === 0) {
+                        mediaOutCloseBrace = i;
+                        break;
+                    }
+                }
+
+                if (mediaOutCloseBrace === -1) {
+                    log("⚠️ Could not parse the MediaOut node.");
+                    return;
+                }
+
+                const mediaOutContent = macroSettingFile.slice(
+                    mediaOutOpenBrace + 1,
+                    mediaOutCloseBrace
+                );
+
+                const sourceOpMatch = mediaOutContent.match(
+                    /\bSourceOp\s*=\s*"([^"]+)"/
+                );
+
+                if (!sourceOpMatch) {
+                    log("⚠️ Could not find the MediaOut source connection.");
+                    return;
+                }
+
+                const sourceOp = sourceOpMatch[1];
+
+                // Remove the complete MediaOut node and its trailing comma.
+                let mediaOutEnd = mediaOutCloseBrace + 1;
+
+                while (
+                    mediaOutEnd < updatedSettingFile.length &&
+                    /[ \t]/.test(updatedSettingFile[mediaOutEnd])
+                ) {
+                    mediaOutEnd++;
+                }
+
+                if (updatedSettingFile[mediaOutEnd] === ",") mediaOutEnd++;
+
+                if (updatedSettingFile[mediaOutEnd] === "\r") mediaOutEnd++;
+                if (updatedSettingFile[mediaOutEnd] === "\n") mediaOutEnd++;
+
+                updatedSettingFile =
+                    updatedSettingFile.slice(0, mediaOutStart) +
+                    updatedSettingFile.slice(mediaOutEnd);
+
+                // Redirect the selected output to the MediaOut's source.
+                const selectedName = selectedOutput[1];
+                const selectedOutputRegex = new RegExp(
+                    `(${selectedName}\\s*=\\s*InstanceOutput\\s*\\{[\\s\\S]*?\\bSourceOp\\s*=\\s*")[^"]+(")`
+                );
+
+                if (!selectedOutputRegex.test(updatedSettingFile)) {
+                    log("⚠️ Could not find SourceOp in the selected output.");
+                    return;
+                }
+
+                updatedSettingFile = updatedSettingFile.replace(
+                    selectedOutputRegex,
+                    `$1${sourceOp}$2`
+                );
+
+                log(`MediaOut "${mediaOutName}" removed. Output redirected to "${sourceOp}".`);
+            }
+
+            // If multiple outputs exist, retain only the selected entry.
+            if (outputEntries.length > 1) {
+                const selectedEntryName = selectedOutput[1];
+
+                // Reparse Outputs in the updated text.
+                const currentOutputsMatch = updatedSettingFile.match(/\bOutputs\s*=\s*\{/);
+
+                if (!currentOutputsMatch) {
+                    log("⚠️ Outputs block disappeared during cleanup.");
+                    return;
+                }
+
+                const currentOutputsOpenBrace =
+                    updatedSettingFile.indexOf("{", currentOutputsMatch.index);
+
+                let depth = 0;
+                let closeBrace = -1;
+
+                for (let i = currentOutputsOpenBrace; i < updatedSettingFile.length; i++) {
+                    if (updatedSettingFile[i] === "{") depth++;
+                    if (updatedSettingFile[i] === "}") depth--;
+
+                    if (depth === 0) {
+                        closeBrace = i;
+                        break;
+                    }
+                }
+
+                if (closeBrace === -1) {
+                    log("⚠️ Could not parse Outputs after cleanup.");
+                    return;
+                }
+
+                const currentContent = updatedSettingFile.slice(
+                    currentOutputsOpenBrace + 1,
+                    closeBrace
+                );
+
+                const entryRegex = /(\w+)\s*=\s*InstanceOutput\s*\{/g;
+                const entries = [...currentContent.matchAll(entryRegex)];
+
+                const keptEntry = entries.find(entry => entry[1] === selectedEntryName);
+
+                if (!keptEntry) {
+                    log("⚠️ Could not locate the selected output after cleanup.");
+                    return;
+                }
+
+                const entryStart = currentOutputsOpenBrace + 1 +
+                    currentContent.indexOf("{", keptEntry.index);
+
+                let entryDepth = 0;
+                let entryClose = -1;
+
+                for (let i = entryStart; i < updatedSettingFile.length; i++) {
+                    if (updatedSettingFile[i] === "{") entryDepth++;
+                    if (updatedSettingFile[i] === "}") entryDepth--;
+
+                    if (entryDepth === 0) {
+                        entryClose = i;
+                        break;
+                    }
+                }
+
+                if (entryClose === -1) {
+                    log("⚠️ Could not parse the selected output entry.");
+                    return;
+                }
+
+                const entryText = updatedSettingFile.slice(
+                    keptEntry.index + currentOutputsOpenBrace + 1,
+                    entryClose + 1
+                );
+
+                const normalizedEntry = entryText.replace(
+                    /^\s*\w+\s*=/,
+                    "MainOutput1 ="
+                );
+
+                updatedSettingFile =
+                    updatedSettingFile.slice(0, currentOutputsOpenBrace + 1) +
+                    "\n\t\t\t\tMainOutput1 = InstanceOutput " +
+                    normalizedEntry.slice(normalizedEntry.indexOf("{")) +
+                    "\n\t\t\t" +
+                    updatedSettingFile.slice(closeBrace);
+            }
+
+            macroSettingFile = updatedSettingFile;
+
+            //
+            // Build ZIP
+            // ----------------------------
+
+            const zip = new JSZip();
+
+            // packagePath and macroName were derived together above, using the
+            // same formatter as the live preview.
+            savePackagePath();
+
+            // Add the main .setting file
+            zip.file( `Edit/${packagePath}/${macroName}.setting`, macroSettingFile );
+
+            // Add the preview if provided (force 104px width)
+            if (settingPreviewFile) {
+                const img = new Image();
+                img.src = URL.createObjectURL(settingPreviewFile);
+                await img.decode();
+                const height = Math.round(img.height * (104 / img.width));
+                const canvas = document.createElement("canvas");
+                canvas.width = 104;
+                canvas.height = height;
+                const ctx = canvas.getContext("2d");
+                ctx.drawImage(img, 0, 0, 104, height);
+                const resizedPreview = await new Promise(resolve =>
+                    canvas.toBlob(resolve, "image/png")
+                );
+                zip.file(
+                    `Edit/${packagePath}/${macroName}.png`,
+                    resizedPreview
+                );
+                URL.revokeObjectURL(img.src);
+            }
+
+            // Add PNG files (support sequences)
+            let missing = 0;
+
+            for (const asset of assets) {
+
+                // Detect sequence pattern: Name_0045.png
+                const match = asset.fileName.match(/^(.*?)(\d+)(\.png)$/i);
+
+                if (match) {
+
+                    // Extract sequence info
+                    const prefix = match[1];
+                    const start = parseInt(match[2]);
+                    const padding = match[2].length;
+                    const ext = match[3];
+
+                    // Add frames until missing
+                    for (let frame = start; ; frame++) {
+
+                        const name = prefix + String(frame).padStart(padding, "0") + ext;
+                        const handle = fileMap.get(name.toLowerCase());
+
+                        if (!handle) break;
+
+                        const file = await handle.getFile();
+                        zip.file(`Edit/${packagePath}/${macroName}Assets/${name}`, file);
+                        log("Added : " + name);
+                    }
+
+                } else {
+
+                    // Normal single PNG
+                    const handle = fileMap.get(asset.fileName.toLowerCase());
+
+                    if (!handle) {
+                        missing++;
+                        log("Missing : " + asset.fileName);
+                        continue;
+                    }
+
+                    const file = await handle.getFile();
+                    zip.file(`Edit/${packagePath}/${macroName}Assets/${asset.fileName}`, file);
+                    log("Added : " + asset.fileName);
+                }
+            }
+
+            if (missing) { log("⚠️ " + missing + " assets were not found."); }
+            else if(!missing && assets.length>0) { log("Assets added successfully.") }
+
+
+            // Make the final .drfx file
+            log("Compressing...");
+
+            const blob = await zip.generateAsync({
+                type: "blob",
+                compression: "DEFLATE",
+                compressionOptions: {
+                    level: 9
+                }
+            });
+
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = macroName + ".drfx";
+            a.click();
+            URL.revokeObjectURL(a.href);
+
+            log("✅ Done.\n");
+
+        });
+
+    </script>
+
+</body>
+
+</html>

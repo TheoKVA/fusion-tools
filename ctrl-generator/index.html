@@ -1,0 +1,1868 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <title>CTRL Generator</title>
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧭</text></svg>" >
+
+
+    <style>
+
+        :root {
+            --main-bg-color: #23232b;
+            --main-highlight-color: ;
+            --main-position-color: #2ab7fc;
+            --card-holder-bg-color: #303136;
+            --card-holder-border: 1px solid #000000;
+            --card-holder-border-radius: 5px;
+            --card-holder-highlight-color: #212126;
+        }
+
+        *, *:before, *:after {
+            box-sizing: inherit;
+            margin: 0px;
+        }
+
+        body {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            max-width: 900px;
+            /* padding: 30px; marges internes */
+            margin: 0px auto; /* marges externes */   
+            background-color: var(--main-bg-color);         
+        }
+        textarea {
+            font-family: Arial, sans-serif;
+        }
+        p, a {
+            font-size: 16px;
+        }
+        p.small-p {
+            font-size: 14px;
+        }
+        .center {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            /* width: 50%; */
+        }
+        .hidden {
+            display: none !important;
+        }
+
+        input[type="text"],
+        select {
+            padding: 8px;
+            min-width: 0px;
+            font-size: medium;
+        }
+        button {
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+        button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        /* GUIDE TO FLEX : https://css-tricks.com/snippets/css/a-guide-to-flexbox/ */
+        .flex-row {
+            display: flex;
+            flex-direction: row ;
+            align-items: stretch;
+        }
+        .flex-column {
+            display: flex;
+            flex-direction: column ;
+            align-items: stretch;
+        }
+        .flex {
+            display: flex;
+            align-items: stretch;
+        }
+        .flex-center {
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ========================================================= */
+
+        /* Overlays */
+        .ui-overlay {
+            position: fixed;
+            inset: 0;
+            align-items: center;
+            justify-content: center;
+            background: #0000006b;
+        }
+
+        #add-menu-overlay {
+            z-index: 10;
+        }
+
+
+
+    </style>
+</head>
+
+<body>
+
+
+    <!-- ========== -->
+    <!-- 💪 BODY 💪 -->
+    <!-- ========== -->
+
+    <!-- ========== -->
+    <!-- MAIN BODY  -->
+    <!-- ========== -->
+
+    <div class="flex-column" style="gap: 20px; padding: 30px; min-height: 100vh;">
+
+        <div class="css-header flex-row" style="gap: 20px; justify-content: space-around; margin-top: 20px;">
+            <div class="flex-column" style="gap: 10px">
+                <img src="data:image/jpg;base64,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" />
+                <p style="display: none">Final user inputs</p>
+            </div>
+            <div class="flex-column" style="gap: 10px">
+                <img src="data:image/jpg;base64,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" />
+                <p style="display: none">Internal node to hook all the interactions.</p>
+            </div>
+        </div>
+
+        
+        
+        <div class="flex-row" style="gap: 20px; align-items: flex-start; justify-content: space-around;">
+            <style>
+                .card-holder {
+                    background-color: var(--card-holder-bg-color);
+                    border: var(--card-holder-border);
+                    border-radius: var(--card-holder-border-radius);
+                    padding: 20px;
+                    font-size: 11px;
+                    color: #C3C1C1;
+                }
+                .card-holder p {
+                    font-size: 11px;
+                }
+                .card-holder-add-btn {
+                    height: 45px;
+                    width: 150px;
+                    padding: 0;
+                    color: white;
+                    background: #ffffff1a;
+                    border: 1px solid #ffffff52;
+                    border-radius: 10px;
+                    white-space: nowrap;
+                }
+                .card-holder-add-btn:hover {
+                    background: #ffffff2e;
+                }
+                .card-holder-copy-btn {
+                    width: 120px;
+                    font-size: 12px;
+                    white-space: nowrap;
+                    color: #C3C1C1;
+                    background-color: var(--card-holder-bg-color);
+                    border: var(--card-holder-border);
+                    border-radius: var(--card-holder-border-radius);
+                }
+                .card-holder:is(.highlighted) {
+                    background-color: #ffffff11;
+                }
+                .card-holder-copy-btn:hover:not(.succeed) {
+                    background: #ffffff2e;
+                }
+                button.succeed {
+                    background: var(--main-position-color);
+                    border: 0px solid;
+                    color: white;
+                }
+            </style>
+            <div class="flex-column" style="gap: 10px">
+                <div class="card-holder flex-column" style="flex: 1; gap: 20px;" data-column="CTRL">
+                    <div id="ctrl-column" class="flex-column"></div>
+                </div>
+                <button class="card-holder-copy-btn center" onclick="generateFusionText('CTRL')" data-column="CTRL">COPY 📋</button>
+            </div>
+            
+            <div class="flex-column" style="gap: 10px">
+                <div class="card-holder flex-column" style="flex: 1; gap: 20px;" data-column="CTRL_OUT">
+                    <div id="ctrl-out-column" class="flex-column"></div>
+                </div>
+                <button class="card-holder-copy-btn center" onclick="generateFusionText('CTRL_OUT')" data-column="CTRL_OUT">COPY 📋</button>
+            </div>
+        </div>
+
+        <div class="flex-row">
+            <button class="card-holder-add-btn center" onclick="openAddMenu()">Add <b>user Input</b> ➕</button>
+            <!-- <button onclick="resetDatabase()">Reset 🧼</button> -->
+        </div>
+
+        <div class="css-header flex-row" style="gap: 20px; justify-content: space-around;">
+        </div>
+
+        
+
+    </div>
+
+
+    <!-- ================= -->
+    <!-- ADD ELEMENT MENU  -->
+    <!-- ================= -->
+
+    <div id="add-menu-overlay" class="ui-overlay flex-row hidden" onclick="closeAddMenu(event)">
+
+        <style>
+            .add-menu-element {
+                padding: 10px 20px;
+                border: none;
+                border-radius: 8px;
+                background: #CCCCCC;
+                color: #303030;
+                transition: background 0.2s ease, border-color 0.2s ease;
+                font-size: 16px;
+            }
+            .add-menu-element:hover {
+                background: #B3B3B3;
+            }
+
+            #add-menu-element-scope-selector {
+                display: inline-flex;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            #add-menu-element-scope-selector button {
+                min-width: 86px;
+                padding: 10px 15px;
+                border: 1px solid rgba(255, 255, 255, 0.12);
+                border-radius: 6px;
+                background: rgba(0, 0, 0, 0.50);
+                color: #e8e8e8;
+                font-size: 12px;
+                font-weight: 700;
+                letter-spacing: 0.02em;
+                transition: background 0.2s ease, border-color 0.2s ease;
+            }
+            #add-menu-element-scope-selector button:hover {
+                background: rgba(0, 0, 0, 0.70);
+            }
+            #add-menu-element-scope-selector button.activated {
+                background: #017BFF;
+            }
+        </style>
+
+        <div class="ui-panel flex-column" onclick="event.stopPropagation()">
+
+            <h2 class="center">Add element 🧱</h2>
+
+            <div class="flex-row center" style="gap: 10px; align-items: center;">
+                <div id="add-menu-element-scope-selector" class="flex-row">
+                    <button type="button" data-scope="CTRL" aria-pressed="false">CTRL</button>
+                    <button type="button" data-scope="CTRL_OUT" aria-pressed="false">CTRL_OUT</button>
+                </div>
+            </div>
+
+            <button class="add-menu-element" onclick="addElement('textInput')">Text INPUT</button>
+            <button class="add-menu-element" onclick="addElement('sliderInput')">Slider INPUT</button>
+            <button class="add-menu-element" onclick="addElement('multiButtonInput')">Multi-button INPUT</button>
+            <button class="add-menu-element" onclick="addElement('textLabel')">LABEL</button>
+        </div>
+    </div>
+
+
+    <!-- ================= -->
+    <!-- SETTINGS OVERLAY  -->
+    <!-- ================= -->
+
+    <style>
+        #settings-overlay {
+            z-index: 20;
+        }
+        .ui-panel {
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 30px;
+            border-radius: 10px;
+            background: #E6E6E6;
+            color: #303030;
+            gap: 15px;
+        }
+        .ui-panel input,
+        .ui-panel select,
+        .ui-panel textarea {
+            padding: 8px;
+            font-size: medium;
+            width: 100%;
+            border: 1px solid #afac9a;
+            border-radius: 8px;
+        }
+        .ui-panel input:hover,
+        .ui-panel select:hover,
+        .ui-panel textarea:hover {
+            border-color: #017BFF;
+        }
+        .ui-panel input:focus,
+        .ui-panel select:focus,
+        .ui-panel textarea:focus {
+            outline: none;
+            border-color: #017BFF;
+            box-shadow: 0 0 0 3px rgba(1, 123, 255, 0.25);
+        }
+
+        
+        /* =========== */
+        /*    SWITCH   */
+        /* =========== */
+        :root {
+            --switch-width: 33px;
+            --switch-height: 18px;
+            --switch-padding: 3px;
+            --switch-color-on: #4573ff;
+            --switch-color-off: #afac9a;
+            --switch-color-toggle: white;
+        }
+
+        /* Hide default HTML checkbox */
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        /* The switch - the box around the slider */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: var(--switch-width);
+            height: var(--switch-height);
+        }
+        /* The slider */
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            inset: 0;
+            background-color: var(--switch-color-off);
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: calc( var(--switch-height) - (2 * var(--switch-padding)) );
+            width: calc( var(--switch-height) - (2 * var(--switch-padding)) );
+            left: var(--switch-padding);
+            bottom: var(--switch-padding);
+            background-color: var(--switch-color-toggle);
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        input:checked + .slider {
+            background-color: var(--switch-color-on);
+        }
+        input:focus + .slider {
+            box-shadow: 0 0 1px var(--switch-color-on);
+        }
+
+        input:checked + .slider:before {
+            -webkit-transform: translateX( calc( var(--switch-width) - var(--switch-height)) );
+            -ms-transform: translateX( calc( var(--switch-width) - var(--switch-height)) );
+            transform: translateX( calc( var(--switch-width) - var(--switch-height)) );
+        }
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: calc( var(--switch-height)/2 );
+        }
+        .slider.round:before {
+            border-radius: 50%;
+        }
+
+        #settings-overlay .button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 120px;
+        }
+        #settings-overlay .ok-button {
+            background: linear-gradient(to bottom, #017BFF, #2690FF);
+            color: white;
+        }
+        #settings-overlay .cancel-button {
+            background-color: #CCCCCC;
+        }
+        #settings-overlay .ok-button:hover {
+            background: linear-gradient(to bottom, #0975e9, #2483e9);
+        }
+        #settings-overlay .cancel-button:hover {
+            background-color: #B3B3B3;
+        }
+    </style>
+
+    <div id="settings-overlay"
+        class="ui-overlay flex-row hidden">
+
+        <!-- STATIC LABEL -->
+        <div id="settings-textLabel" class="ui-panel flex-column hidden" data-settings-type="textLabel" onclick="event.stopPropagation()">
+            <h2>Modify LABEL</h2>
+            <div class="flex-column" style="gap: 3px;">
+                <p>Text</p>
+                <input type="text" data-field="text">
+            </div>
+            <div class="flex-row center" style="gap: 10px; margin-top: 20px;">
+                <button onclick="closeSettings(event)" class="button cancel-button">Cancel</button>
+                <button onclick="saveSettings()" class="button ok-button">Save</button>
+            </div>
+        </div>
+
+        <!-- TEXT INPUT SETTING -->
+        <div id="settings-textInput" class="ui-panel flex-column hidden" data-settings-type="textInput" onclick="event.stopPropagation()">
+            <h2>Modify text input</h2>
+
+            <div class="flex-row" style="gap: 20px;">
+                <div class="flex-column" style="gap: 3px;">
+                    <p>Title</p>
+                    <input type="text" data-field="label">
+                </div>
+
+                <div class="flex-column" style="gap: 3px;">
+                    <p>Internal Label</p>
+                    <input type="text" data-field="internalLabel">
+                </div>
+            </div>
+            
+            <div class="flex-column" style="gap: 3px;">
+                <p>Default value</p>
+                <textarea data-field="defaultValue" rows="5"></textarea>
+            </div>
+
+            <div class="flex-row" style="gap: 20px;">
+                <div class="flex-column" style="gap: 3px; flex: 2;">
+                    <p><u>UI options</u></p>
+                    <div class="flex-column" style="gap: 3px;">
+                        <div class="flex-row" style="gap: 8px; align-items: center;">
+                            <input type="number" data-field="blocHeight" min="1" style="width: 50px; text-align: center;">
+                            <p class="small-p">Bloc Height</p>
+                        </div>
+                        <div class="flex-row" style="gap: 8px; height: 28px; align-items: center;"> 
+                            <label class="switch">
+                                <input type="checkbox" data-field="UIlineBreak" style="width: auto;">
+                                <span class="slider round"></span>
+                            </label>
+                            <p class="small-p">Line break ? </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex-column" style="gap: 3px; flex: 3;">
+                    <p><u>Text Post-Processing</u></p>
+                    <div class="flex-column" style="gap: 3px;">
+                        <div class="flex-row" style="gap: 8px; height: 28px; align-items: center;"> 
+                            <label class="switch">
+                                <input type="checkbox" data-field="upperCase" style="width: auto;">
+                                <span class="slider round"></span>
+                            </label>
+                            <p class="small-p">Upper Case</p>
+                        </div>
+                        <div class="flex-row" style="gap: 8px; height: 28px; align-items: center;"> 
+                            <label class="switch">
+                                <input type="checkbox" data-field="removeDoubleSpaces" style="width: auto;" checked>
+                                <span class="slider round"></span>
+                            </label>
+                            <p class="small-p">Remove Double Spaces</p>
+                        </div>
+                        <div class="flex-row" style="gap: 8px; align-items: center;">
+                            <input type="number" data-field="maxLines" min="0" style="width: 50px; text-align: center;">
+                            <p class="small-p">Maximum lines</p>
+                        </div>
+                        <div class="flex-row" style="gap: 8px; height: 28px; align-items: center;"> 
+                            <label class="switch">
+                                <input type="checkbox" data-field="trimLines" style="width: auto;" checked>
+                                <span class="slider round"></span>
+                            </label>
+                            <p class="small-p">Trim() Lines</p>
+                        </div>
+                        <div class="flex-row" style="gap: 8px; height: 28px; align-items: center;"> 
+                            <label class="switch">
+                                <input type="checkbox" data-field="removeEmptyLines" style="width: auto;" checked>
+                                <span class="slider round"></span>
+                            </label>
+                            <p class="small-p">Remove Empty Lines</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex-row center" style="gap: 10px; margin-top: 20px;">
+                <button onclick="closeSettings(event)" class="button cancel-button">Cancel</button>
+                <button onclick="saveSettings()" class="button ok-button">Save</button>
+            </div>
+        </div>
+
+        <!-- Slider settings -->
+        <div id="settings-sliderInput" class="ui-panel flex-column hidden" data-settings-type="sliderInput" onclick="event.stopPropagation()">
+            <h2>Modify slider</h2>
+
+            <div class="flex-row" style="gap: 20px;">
+                <div class="flex-column" style="gap: 3px;">
+                    <p>Title</p>
+                    <input type="text" data-field="label">
+                </div>
+
+                <div class="flex-column" style="gap: 3px;">
+                    <p>Internal Label</p>
+                    <input type="text" data-field="internalLabel">
+                </div>
+            </div>
+
+            <div class="flex-column" style="gap: 3px;">
+                <p>Default value</p>
+                <div class="flex-row" style="gap: 15px; align-items: center;">
+                    <input type="number" data-field="defaultValue" step="any">
+                    <div class="flex-row" style="gap: 8px; align-items: center;"> 
+                        <label class="switch">
+                            <input type="checkbox" data-field="integer" style="width: auto;"> 
+                            <span class="slider round"></span>
+                        </label>
+                        <p class="small-p" style="white-space: nowrap;">Integer ? </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex-row" style="gap: 8px; align-items: end;">
+                <div class="flex-column" style="flex: 1; gap: 3px; ">
+                    <p>Min allowed</p>
+                    <input type="number" data-field="minAllowed" step="any">
+                </div>
+                <div class="flex-column" style="flex: 1; gap: 3px;">
+                    <p>Min</p>
+                    <input type="number" data-field="min" step="any">
+                </div>
+                <div class="flex-column" style="flex: 1; gap: 3px;">
+                    <p>Max</p>
+                    <input type="number" data-field="max" step="any">
+                </div>
+                <div class="flex-column" style="flex: 1; gap: 3px;">
+                    <p>Max allowed</p>
+                    <input type="number" data-field="maxAllowed" step="any">
+                </div>
+            </div>
+
+            <div class="flex-row center" style="gap: 10px; margin-top: 20px;">
+                <button onclick="closeSettings(event)" class="button cancel-button">Cancel</button>
+                <button onclick="saveSettings()" class="button ok-button">Save</button>
+            </div>
+        </div>
+
+        <!-- Multi-button settings -->
+        <div id="settings-multiButtonInput" class="ui-panel flex-column hidden" data-settings-type="multiButtonInput" onclick="event.stopPropagation()">
+            <h2>Modify multi-button</h2>
+
+            <div class="flex-row" style="gap: 20px;">
+                <div class="flex-column" style="gap: 3px;">
+                    <p>Title</p>
+                    <input type="text" data-field="label">
+                </div>
+
+                <div class="flex-column" style="gap: 3px;">
+                    <p>Internal Label</p>
+                    <input type="text" data-field="internalLabel">
+                </div>
+            </div>
+
+            <div class="flex-column" style="gap: 3px;">
+                <p>Options (one per line)</p>
+                <textarea data-field="options" rows="5" placeholder="OPTION 1&#10;OPTION 2&#10;OPTION 3"></textarea>
+            </div>
+
+            <div class="flex-row" style="gap: 8px; align-items: center;">
+                <input type="number" data-field="defaultValue" min="0" step="1" style="width: 50px; text-align: center;">
+                <p class="small-p">Default option index (starting at 0)</p>
+            </div>
+
+            <div class="flex-row center" style="gap: 10px; margin-top: 20px;">
+                <button onclick="closeSettings(event)" class="button cancel-button">Cancel</button>
+                <button onclick="saveSettings()" class="button ok-button">Save</button>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- =============== -->
+    <!--   HTML CARDS    -->
+    <!-- =============== -->
+
+    <style>
+        .element-card {
+            gap: 10px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            padding: 2.5px 0;
+        }
+        .element-card button{
+            margin: 0;
+            padding: 0;
+        }
+        .element-card textarea, 
+        .element-card input[type="text"],
+        .element-card .multibutton-container {
+            background-color: rgba(12, 13, 2, 0.3);
+            border: 1px solid #070707;
+            font-size: 11px;
+            color: #ffffff;
+            font-size: 12px;
+            padding: 5px 2px ;
+            resize: none;
+            border-radius: 3px;
+        }
+        .element-card input[type="text"] {
+            height: 20px;
+        }
+        .element-card .multibutton-container {
+            background-color: rgba(12, 13, 2, 0.3);
+            color: #858789; 
+            padding: 0;
+            flex: 1;
+            text-align: center;
+            height: 20px;
+        }
+        .element-card .multibutton {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            justify-content: center;
+        }
+        .element-card .multibutton-container .activated {
+            background-color: #17181A;
+            color: #ffffff; 
+        }
+        .element-card.dragging    { opacity: 0.4; }
+        .element-card.drop-before { box-shadow: 0 -2px 0 0 var(--main-position-color); }
+        .element-card.drop-after  { box-shadow: 0  2px 0 0 var(--main-position-color); }
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            background: transparent;
+            pointer-events: none;
+        }
+        input[type="range"]::-webkit-slider-runnable-track {
+            background: #171717;
+            height: 3px;
+            border-radius: 2px;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none; /* Override default look */
+            appearance: none;
+            margin-top: -3px; /* Centers thumb on the track */
+            background-color: #919191;
+            border: 0.5px solid #171717;
+            height: 10px;
+            width: 10px;
+            border-radius: 5px;  
+        }
+        
+        .element-card-preview {
+            cursor: pointer;
+            flex: 1;
+            display: flex;
+            flex-direction: row;
+            gap: 5px;
+        }
+        .element-card-preview-label {
+            width: 120px;
+            text-align: right;
+            margin-top: 5px;
+        }
+        .element-card-preview input {
+            cursor: inherit;
+        }
+        .element-card-preview:hover,
+        .element-card.highlighted .element-card-preview {
+            background-color: #ffffff11;
+        }
+        .delete-btn {
+            border: none; 
+            cursor: pointer;
+            opacity: 0.3;
+        }
+        .delete-btn:hover {
+            opacity: 1;
+        }
+    </style>
+
+
+    <!--   TEXT INPUT    -->
+    <template id="template-textInput">
+        <div class="element-card">
+            <div data-action="modify" title="Modify" class="element-card-preview">
+                <p data-role="label" class="element-card-preview-label"></p>
+                <textarea data-role="placeholder" rows="2" style="flex:1;" readonly>Placeholder</textarea>
+            </div>
+            <p data-action="remove" title="Delete" class="delete-btn">❌</p>
+        </div>
+    </template>
+
+    <!--   STATIC LABEL    -->
+    <template id="template-textLabel">
+        <div class="element-card">
+            <div data-action="modify" title="Modify" class="element-card-preview">
+                <p class="element-card-preview-label"></p>
+                <p data-role="label"></p>
+            </div>
+            <p data-action="remove" title="Delete" class="delete-btn">❌</p>
+        </div>
+    </template>
+
+    <!--   SLIDER    -->
+    <template id="template-sliderInput">
+        <div class="element-card">
+            <div data-action="modify" title="Modify" class="element-card-preview">
+                <p data-role="label" class="element-card-preview-label"></p>
+                <input type="range" data-role="slider" min="0" max="10" value="2" style="flex: 1"/>
+                <input type="text" data-role="placeholder" style="width: 55px; text-align: center;" value="0.0" />
+            </div>
+            <p data-action="remove" title="Delete" class="delete-btn">❌</p>
+        </div>
+    </template>
+
+    <!--   MULTI BUTTON -->
+    <template id="template-multiButtonInput">
+        <div class="element-card">
+            <div data-action="modify" title="Modify" class="element-card-preview">
+                <p data-role="label" class="element-card-preview-label"></p>
+                <div data-role="multibutton-container" class="flex-row multibutton-container">
+                    <div class="multibutton activated" style="flex:1">
+                        <p>OPTN 1</p>
+                    </div>
+                    <div class="multibutton" style="flex:1">
+                        <p>OPTN 2</p>
+                    </div>
+                </div>
+            </div>
+            <p data-action="remove" title="Delete" class="delete-btn">❌</p>
+        </div>
+    </template>
+
+
+    
+
+    <!-- ============= -->
+    <!-- 🧰 SCRIPTS 🧰 -->
+    <!-- ============= -->
+
+    <script>
+
+        document.querySelectorAll(atob("LmNzcy1oZWFkZXI=")).forEach(e=>e.title=atob("Q29kZWQgYnkgVGhlbyBGcmFuY2FydCBAIFJUUyAtIFJhZGlvIFRlbGV2aXNpb24gU3Vpc3Nl"));
+
+        /* ==========================================================================
+        MAIN DB
+        ========================================================================== */
+
+        const db = {
+            elements: {},
+
+            nodes: {
+                CTRL: { elements: [] },
+                CTRL_OUT: { elements: [] }
+            }
+        };
+
+
+        /* ==========================================================================
+        ELEMENT TEMPLATES
+        ========================================================================== */
+
+        const elementTemplates = {
+            textLabel: {
+                type: "textLabel",
+                text: "TEXT"
+            },
+
+            textInput: {
+                type: "textInput",
+                label: "Text",
+                internalLabel: "InputText",
+                internalLabelSet: false,
+                defaultValue: "",
+                blocHeight: 3,
+                UIlineBreak: false,
+                trimLines: true,
+                upperCase: false,
+                removeEmptyLines: true,
+                removeDoubleSpaces: true,
+                maxLines: 0
+            },
+
+            sliderInput: {
+                type: "sliderInput",
+                label: "Slider",
+                internalLabel: "InputSlider",
+                internalLabelSet: false,
+                defaultValue: 0,
+                min: 0,
+                max: 100,
+                minAllowed: -1000000,
+                maxAllowed: 1000000,
+                integer: false
+            },
+
+            multiButtonInput: {
+                type: "multiButtonInput",
+                label: "MultiButton",
+                internalLabel: "InputButton",
+                internalLabelSet: false,
+                options: ["OPTION 1", "OPTION 2", "OPTION 3"],
+                defaultValue: 0
+            }
+        };
+
+
+        /* ==========================================================================
+        STATE
+        ========================================================================== */
+
+        let addScope = [];
+        let editingElementId = null;
+
+
+        /* ==========================================================================
+        ADD MENU
+        ========================================================================== */
+
+        function openAddMenu(scope) {
+            setAddScopeSelection(["CTRL", "CTRL_OUT"]);
+            // setAddScopeSelection([scope]);
+            document.getElementById("add-menu-overlay").classList.remove("hidden");
+        }
+
+        // Interaction BUTOON SCOPE
+        document.querySelectorAll("#add-menu-element-scope-selector [data-scope]").forEach(button => {
+            button.addEventListener("click", () => {
+                const scopes = [...addScope];
+                const index = scopes.indexOf(button.dataset.scope);
+                if (index === -1) {
+                    scopes.push(button.dataset.scope);
+                } else {
+                    scopes.splice(index, 1);
+                }
+                setAddScopeSelection(scopes);
+            });
+        });
+
+        function setAddScopeSelection(scopes) {
+            document.querySelectorAll("#add-menu-element-scope-selector [data-scope]").forEach(button => {
+                const isActive = scopes.includes(button.dataset.scope);
+                button.classList.toggle("activated", isActive);
+                button.setAttribute("aria-pressed", String(isActive));
+            });
+            addScope = scopes;
+        }
+
+        function closeAddMenu(event) {
+            if (event && event.target !== event.currentTarget) return;
+            document.getElementById("add-menu-overlay").classList.add("hidden");
+            addScope = [];
+        }
+
+
+        /* ==========================================================================
+        ADD ELEMENT
+        ========================================================================== */
+
+        document.querySelector(".card-holder-add-btn").addEventListener("mouseover", () => {
+            clearDropIndicators();
+            const node = document.querySelectorAll(`#ctrl-column .element-card:last-child, #ctrl-out-column .element-card:last-child`);
+            node.forEach(n => n.classList.add("drop-after"));
+        });
+        document.querySelector(".card-holder-add-btn").addEventListener("mouseout", () => {
+            clearDropIndicators();
+        });
+
+        function addElement(type) {
+
+            if (addScope.length === 0 || !elementTemplates[type]) {
+                return;
+            }
+
+            // Clone the default configuration.
+            const element = structuredClone(elementTemplates[type]);
+
+            const id = crypto.randomUUID();
+            element.id = id;
+
+            switch(type) {
+                case 'textInput':
+                    element.internalLabel = `InputText${element.id.replaceAll("-", "").slice(0, 3)}`;
+                    break
+                case 'sliderInput':
+                    element.internalLabel = `InputSlider${element.id.replaceAll("-", "").slice(0, 3)}`;
+                    break
+                case 'multiButtonInput':
+                    element.internalLabel = `InputButton${element.id.replaceAll("-", "").slice(0, 3)}`;
+                    break
+                case 'textLabel':
+                    element.internalLabel = `Label${element.id.replaceAll("-", "").slice(0, 3)}`;
+                    break
+                default: 
+                    element.internalLabel = `Input${element.id.replaceAll("-", "").slice(0, 3)}`;
+                    break
+            }
+
+            // Store the definition.
+            db.elements[id] = element;
+
+            // Store its position in the relevant node(s).
+            addScope.forEach(scope => {
+                db.nodes[scope].elements.push(id);
+            });
+
+            closeAddMenu();
+            renderApp();
+
+            console.log("Element added:", element);
+        }
+
+
+
+        /* ==========================================================================
+        SETTINGS
+        ========================================================================== */
+
+        // ===== MODAL KEYBOARD SHORTCUTS =====
+        document.addEventListener("keydown", event => {
+            if (event.isComposing) return; // don't hijack IME input
+
+            const settingsOpen = !document.getElementById("settings-overlay").classList.contains("hidden");
+            const addMenuOpen  = !document.getElementById("add-menu-overlay").classList.contains("hidden");
+
+            if (event.key === "Escape") {
+                if (settingsOpen) closeSettings();
+                else if (addMenuOpen) closeAddMenu();
+                return;
+            }
+
+            if (event.key === "Enter" && settingsOpen && !event.repeat) {
+                const tag = event.target.tagName;
+                if (tag === "BUTTON") return; // let Enter activate the focused button (e.g. Cancel)
+                if (tag === "TEXTAREA" && !(event.ctrlKey || event.metaKey)) return; // Enter = new line
+                event.preventDefault();
+                saveSettings();
+            }
+        });
+
+        function openSettings(id) {
+
+            const element = db.elements[id];
+
+            if (!element) return;
+
+            editingElementId = id;
+
+            const overlay = document.getElementById("settings-overlay");
+
+            // Hide all settings panels.
+            overlay.querySelectorAll("[data-settings-type]").forEach(panel => panel.classList.add("hidden"));
+
+            // Show the panel matching this element type.
+            const panel = overlay.querySelector(`[data-settings-type="${element.type}"]`);
+
+            // If no matching panel, exit.
+            if (!panel) return;
+
+            // Populate the form from the DB.
+            panel.querySelectorAll("[data-field]").forEach(input => {
+
+                const property = input.dataset.field;
+                let value = element[property];
+
+                if (property === "options") {
+                    value = Array.isArray(value) ? value.join("\n") : "";
+                }
+
+                if (input.type === "checkbox") {
+                    input.checked = Boolean(value);
+                } else {
+                    input.value = value ?? "";
+                }
+            });
+
+            // Add an input listener to the label field to update the internalLabel automatically.
+            const labelInput = panel.querySelector('[data-field="label"]');
+            if (labelInput) {
+                labelInput.oninput = () => {
+                    if (element.internalLabelSet) return; // Don't override if the user has set it manually.
+                    const prefixes = {
+                        textInput: "InputText",
+                        sliderInput: "InputSlider",
+                        multiButtonInput: "InputButton",
+                        textLabel: "Label"
+                    };
+                    const cleanLabel = labelInput.value
+                        .normalize("NFD")
+                        .replace(/[\u0300-\u036f]/g, "") // Remove accents
+                        .replace(/[^a-zA-Z0-9\s]/g, "") // Remove special characters
+                        .trim()
+                        .replace(/\s+/g, " ")
+                        .replace(/\b\w/g, char => char.toUpperCase())
+                        .replace(/\s/g, "");
+                    panel.querySelector('[data-field="internalLabel"]').value = (prefixes[element.type] || "Input") + cleanLabel;
+                };
+            }
+            panel.querySelector('[data-field="internalLabel"]').oninput = () => {
+                element.internalLabelSet = true; // Mark as manually set.
+            };
+
+            panel.classList.remove("hidden");
+            overlay.classList.remove("hidden");
+
+            // Focus the first input in the panel.
+            const first = panel.querySelector("input, textarea, select");
+            if (first) { first.focus(); first.select?.(); }
+        }
+
+        function closeSettings(event) {
+
+            if (event && event.target !== event.currentTarget) {
+                return;
+            }
+
+            document.getElementById("settings-overlay").classList.add("hidden");
+
+            editingElementId = null;
+        }
+
+        function saveSettings() {
+
+            const element = db.elements[editingElementId];
+
+            if (!element) return;
+
+            const panel = document.querySelector(
+                `[data-settings-type="${element.type}"]`
+            );
+
+            if (!panel) return;
+
+            panel.querySelectorAll("[data-field]").forEach(input => {
+                const property = input.dataset.field;
+                let value;
+                if (input.type === "checkbox") {
+                    value = input.checked;
+                } else if (property === "options") {
+                    value = input.value.split("\n").map(option => option.trim()).filter(option => option !== "");
+                } else if (input.type === "number") {
+                    value = input.value.trim() === "" ? null : Number(input.value);
+                } else {
+                    value = input.value;
+                }
+                element[property] = value;
+            });
+
+            // Basic slider validation.
+            if (element.type === "sliderInput") {
+
+                if (
+                    element.min === null ||
+                    element.max === null ||
+                    element.min > element.max
+                ) {
+                    alert("The slider minimum must be less than or equal to its maximum.");
+                    return;
+                }
+
+                if (
+                    element.defaultValue < element.minAllowed ||
+                    element.defaultValue > element.maxAllowed
+                ) {
+                    alert("The default value is outside the allowed range.");
+                    return;
+                }
+            }
+
+            // Basic multi-button validation.
+            if (element.type === "multiButtonInput") {
+
+                if (
+                    element.options.length === 0 ||
+                    element.defaultValue < 0 ||
+                    element.defaultValue >= element.options.length ||
+                    !Number.isInteger(element.defaultValue)
+                ) {
+                    alert("Choose at least one option and a valid default index.");
+                    return;
+                }
+            }
+            closeSettings();
+            renderApp();
+        }
+
+
+        /* ==========================================================================
+        UPDATE ELEMENT
+        ========================================================================== */
+
+        function updateElement(id, property, value) {
+            if (!db.elements[id]) return;
+            db.elements[id][property] = value;
+            renderApp();
+        }
+
+
+        /* ==========================================================================
+        MOVE ELEMENT
+        ========================================================================== */
+        
+        // Highlight matching elements across both columns.
+        document.addEventListener("mouseover", event => {
+            const card = event.target.closest(".element-card[data-element-id]");
+            if (!card) return;
+
+            highlightMatchingCards(card.dataset.elementId);
+        });
+
+        document.addEventListener("mouseout", event => {
+            const card = event.target.closest(".element-card[data-element-id]");
+            if (!card) return;
+
+            // Ignore movement between children of the same card.
+            if (card.contains(event.relatedTarget)) return;
+
+            highlightMatchingCards(null);
+        });
+
+        function highlightMatchingCards(elementId) {
+            document.querySelectorAll(".element-card[data-element-id]").forEach(card => {
+                card.classList.toggle(
+                    "highlighted",
+                    elementId !== null && card.dataset.elementId === elementId
+                );
+            });
+        }
+
+        // ===== DRAG & DROP REORDERING =====
+        let dragInfo = null; // { nodeName, id }
+
+        function getCardFromEvent(event) {
+            return event.target.closest?.(".element-card[data-element-id]") ?? null;
+        }
+
+        function isAfterMidpoint(event, card) {
+            const rect = card.getBoundingClientRect();
+            return event.clientY > rect.top + rect.height / 2;
+        }
+
+        function clearDropIndicators() {
+            document.querySelectorAll(".drop-before, .drop-after")
+                .forEach(c => c.classList.remove("drop-before", "drop-after"));
+        }
+
+        document.addEventListener("dragstart", event => {
+            const card = getCardFromEvent(event);
+            if (!card) return;
+            dragInfo = { nodeName: card.dataset.nodeName, id: card.dataset.elementId };
+            event.dataTransfer.effectAllowed = "move";
+            event.dataTransfer.setData("text/plain", dragInfo.id); // Firefox needs this
+            card.classList.add("dragging");
+        });
+
+        document.addEventListener("dragover", event => {
+            if (!dragInfo) return;
+
+            // Accept the drop anywhere, so "drop" always fires
+            event.preventDefault();
+            event.dataTransfer.dropEffect = "move";
+
+            // Only update the remembered position over a card of the same column
+            const card = getCardFromEvent(event);
+            if (!card || card.dataset.nodeName !== dragInfo.nodeName) return;
+
+            dragInfo.targetId = card.dataset.elementId;
+            dragInfo.after = isAfterMidpoint(event, card);
+
+            clearDropIndicators();
+            card.classList.add(dragInfo.after ? "drop-after" : "drop-before");
+        });
+
+        document.addEventListener("drop", event => {
+            if (!dragInfo) return;
+            event.preventDefault();
+
+            const { nodeName, id, targetId, after } = dragInfo;
+            dragInfo = null;
+
+            // Never hovered a valid card: nothing to do
+            if (!targetId) { clearDropIndicators(); return; }
+
+            const elements = db.nodes[nodeName].elements;
+            const from = elements.indexOf(id);
+            let to = elements.indexOf(targetId);
+            if (from === -1 || to === -1) { clearDropIndicators(); return; }
+
+            if (after) to++;
+            if (from < to) to--; // account for the removal shifting indexes
+
+            if (to !== from) moveElementTo(nodeName, from, to);
+            else clearDropIndicators();
+        });
+
+        document.addEventListener("dragend", () => {
+            dragInfo = null;
+            clearDropIndicators();
+            document.querySelectorAll(".dragging").forEach(c => c.classList.remove("dragging"));
+        });
+
+        function moveElementTo(nodeName, fromIndex, toIndex) {
+            console.log('moveElementTo', nodeName, fromIndex, toIndex);
+            const elements = db.nodes[nodeName].elements;
+            const [moved] = elements.splice(fromIndex, 1);
+            elements.splice(toIndex, 0, moved);
+            renderApp();
+        }
+
+
+        /* ==========================================================================
+        REMOVE ELEMENT
+        ========================================================================== */
+
+        function removeElement(nodeName, id) {
+            // Remove this element from every node.
+            Object.values(db.nodes).forEach(node => {
+                node.elements = node.elements.filter(elementId => elementId !== id);
+            });
+            // Delete the definition.
+            delete db.elements[id];
+            renderApp();
+        }
+
+
+        /* ==========================================================================
+        RENDER APP
+        ========================================================================== */
+
+        function renderApp() {
+
+            const columns = {
+                CTRL: document.getElementById("ctrl-column"),
+                CTRL_OUT: document.getElementById("ctrl-out-column")
+            };
+
+            Object.entries(columns).forEach(([nodeName, column]) => {
+
+                // Remove existing rendered cards, keeping the column heading.
+                column.querySelectorAll("[data-element-card]")
+                    .forEach(card => card.remove());
+
+                const ids = db.nodes[nodeName].elements;
+                const IS_IN_CTRL = nodeName === "CTRL";
+
+                ids.forEach(id => {
+
+                    // Grab the element in the database
+                    const element = db.elements[id];
+                    if (!element) return;
+
+                    // Clone the matching HTML template.
+                    const template = document.getElementById( `template-${element.type}` );
+                    if (!template) { console.error("Missing HTML template:", element.type); return;}
+
+                    const card = template.content.firstElementChild.cloneNode(true);
+                    card.dataset.elementCard = "";
+                    card.dataset.elementId = id;
+                    card.dataset.nodeName = nodeName;
+                    card.draggable = true;
+
+                    // Populate the element-specific content
+                    switch (element.type) {
+                        // STATIC LABEL
+                        case "textLabel":
+                            card.querySelector('[data-role="label"]').textContent = element.text
+                            break;
+
+                        case "textInput":
+                            card.querySelector('[data-role="label"]').textContent = IS_IN_CTRL ? element.label : element.internalLabel;
+                            if(IS_IN_CTRL) {
+                                card.querySelector('[data-role="placeholder"]').textContent = element.defaultValue;
+                            }
+                            else {
+                                let text = element.defaultValue;
+                                // Change the text according to the settings
+                                // maxLines :  0 
+                                // removeDoubleSpaces :  true 
+                                // removeEmptyLines :  true 
+                                // trimLines :  true 
+                                // upperCase :  false
+                            
+                                // Normalize Windows line endings
+                                text = text.replace(/\r\n/g, "\n");
+
+                                // 1. Remove double spaces (spaces only, newlines untouched)
+                                if(element.removeDoubleSpaces) {
+                                    text = text.replace(/ +/g, " ");
+                                }
+                                // 2. Upper case
+                                if(element.upperCase) {
+                                    text = text.toUpperCase();
+                                }
+                                // 3. Single pass over the lines: trim, skip empty, max lines
+                                const outLines = [];
+                                for(let line of text.split("\n")) {
+                                    if(element.trimLines) {
+                                        line = line.trim();
+                                    }
+                                    if(element.removeEmptyLines && line.trim() === "") {
+                                        continue;
+                                    }
+                                    outLines.push(line);
+                                    if(element.maxLines > 0 && outLines.length >= element.maxLines) {
+                                        break;
+                                    }
+                                }
+                                text = outLines.join("\n");
+                                card.querySelector('[data-role="placeholder"]').textContent = text;
+                                card.querySelector('[data-role="placeholder"]').style.whiteSpace = element.UIlineBreak ? "normal" : "nowrap";
+                            }
+                            card.querySelector('[data-role="placeholder"]').rows = element.blocHeight;
+                            break;
+
+                        case "sliderInput":
+                            // console.log("Rendering slider:", element);
+                            // console.log(card.querySelector('[data-role="slider"]'));
+                            card.querySelector('[data-role="label"]').textContent = IS_IN_CTRL ? element.label : element.internalLabel;
+                            card.querySelector('[data-role="placeholder"]').value = !element.integer ? Number(element.defaultValue).toFixed(1) : Number(element.defaultValue).toFixed(0);
+                            card.querySelector('[data-role="slider"]').min = element.min;
+                            card.querySelector('[data-role="slider"]').max = element.max;
+                            card.querySelector('[data-role="slider"]').value = Number(element.defaultValue);
+                            break;
+
+                        case "multiButtonInput": {
+                            card.querySelector('[data-role="label"]').textContent = IS_IN_CTRL ? element.label : element.internalLabel;
+                            const container = card.querySelector('[data-role="multibutton-container"]');
+                            container.innerHTML = "";
+                            element.options.forEach((option, index) => {
+                                const button = document.createElement("div");
+                                button.className = "multibutton";
+                                button.style.flex = "1";
+                                if (index === Number(element.defaultValue)) {
+                                    button.classList.add("activated");
+                                }
+                                const p = document.createElement("p");
+                                p.textContent = option;
+                                button.appendChild(p);
+                                container.appendChild(button);
+                            });
+                            break;
+                        }
+                    }
+
+                    // INTERACTIONS
+                    card.querySelector('[data-action="modify"]').addEventListener("click", () => openSettings(id));
+                    card.querySelector('[data-action="remove"]') .addEventListener("click", () => removeElement(nodeName, id) );
+
+                    column.appendChild(card);
+                });
+            });
+
+            saveDatabase();
+        }
+
+
+        /* ==========================================================================
+        DB AUTO SAVE
+        ========================================================================== */
+
+        const STORAGE_KEY = "fusion-control-builder-db";
+
+        function saveDatabase() { localStorage.setItem(STORAGE_KEY, JSON.stringify(db)); }
+
+        function loadDatabase() {
+            const savedData = localStorage.getItem(STORAGE_KEY);
+            if (!savedData) return;
+            try {
+                const savedDb = JSON.parse(savedData);
+                if (
+                    !savedDb.elements ||
+                    !Array.isArray(savedDb.nodes?.CTRL?.elements) ||
+                    !Array.isArray(savedDb.nodes?.CTRL_OUT?.elements)
+                ) {
+                    console.warn("Invalid saved database. Starting fresh.");
+                    return;
+                }
+                db.elements = savedDb.elements;
+                db.nodes.CTRL.elements = savedDb.nodes.CTRL.elements;
+                db.nodes.CTRL_OUT.elements = savedDb.nodes.CTRL_OUT.elements;
+            } catch (error) {
+                console.error("Failed to load saved database:", error);
+            }
+        }
+
+        function resetDatabase() {
+            if (!confirm("Reset everything?")) return;
+            db.elements = {};
+            db.nodes.CTRL.elements = [];
+            db.nodes.CTRL_OUT.elements = [];
+            renderApp();
+        }
+
+
+        
+        /* ==========================================================================
+        FUSION
+        ========================================================================== */
+
+        // ----------------------------------------
+        // FUSION OUTPUT HELPERS
+        // ----------------------------------------
+
+        function luaQuote(value) {
+            return '"' + String(value ?? "")
+                .replace(/\\/g, "\\\\")
+                .replace(/"/g, '\\"')
+                .replace(/\r\n|\r|\n/g, "\\n") + '"';
+        }
+
+        function getInternalLabel(element) {
+            return element.internalLabel ||
+                `Control_${element.id.replaceAll("-", "").slice(0, 8)}`;
+        }
+
+        function getFusionDisplayName(element, nodeName) {
+            if (nodeName === "CTRL_OUT") {
+                return getInternalLabel(element);
+            }
+
+            // textLabel stores its displayed text in "text".
+            return element.type === "textLabel"
+                ? element.text
+                : element.label;
+        }
+
+        function getNodeElements(nodeName) {
+            const node = db.nodes[nodeName];
+
+            if (!node) {
+                throw new Error(`Unknown node: ${nodeName}`);
+            }
+
+            return node.elements.map(id => {
+                const element = db.elements[id];
+
+                if (!element) {
+                    throw new Error(`Missing element definition: ${id}`);
+                }
+
+                return element;
+            });
+        }
+
+
+        // ----------------------------------------
+        // USER CONTROL GENERATION
+        // ----------------------------------------
+
+        function generateUserControl(element, nodeName) {
+            const internalLabel = getInternalLabel(element);
+            const displayName = luaQuote(
+                getFusionDisplayName(element, nodeName)
+            );
+
+            // Validate the internal Fusion identifier.
+            if (!/^[A-Za-z_][A-Za-z0-9_]*$/.test(internalLabel)) {
+                throw new Error(`Invalid internal label: ${internalLabel}`);
+            }
+
+            const executeOnChange = nodeName === "CTRL"
+                ? `INPS_ExecuteOnChange = [[ tool:SetInput("Refresh",  tool:GetInput("Refresh") == 0 and 1 or 0) ]],`
+                : "";
+
+            switch (element.type) {
+                case "textLabel":
+                    return `${internalLabel} = {
+                    LINKS_Name = ${displayName},
+                    LINKID_DataType = "Number",
+                    LBLC_DropDownButton = false,
+                    INPID_InputControl = "LabelControl",
+                    INP_External = false,
+                    INP_Passive = true,
+                    ICS_ControlPage = "Controls",
+                },`;
+
+                case "textInput":
+                    return `${internalLabel} = {
+                    LINKS_Name = ${displayName},
+                    LINKID_DataType = "Text",
+                    INPID_InputControl = "TextEditControl",
+                    TEC_Lines = ${Number(element.blocHeight) || 3},
+                    TEC_Wrap = ${element.UIlineBreak ? "true" : "false"},
+                    TEC_ReadOnly = false,
+                    ${executeOnChange}
+                    ICS_ControlPage = "Controls",
+                },`;
+
+                case "sliderInput":
+                    return `${internalLabel} = {
+                    LINKS_Name = ${displayName},
+                    LINKID_DataType = "Number",
+                    INPID_InputControl = "SliderControl",
+                    INP_Default = ${Number(element.defaultValue) ?? 0},
+                    INP_Integer = ${Boolean(element.integer)},
+                    INP_MinScale = ${Number(element.min) ?? 0},
+                    INP_MaxScale = ${Number(element.max) ?? 100},
+                    INP_MinAllowed = ${Number(element.minAllowed) ?? 0},
+                    INP_MaxAllowed = ${Number(element.maxAllowed) ?? 100},
+                    INP_SplineType = "Default",
+                    ${executeOnChange}
+                    ICS_ControlPage = "Controls",
+                },`;
+
+                case "multiButtonInput": {
+                    const options = (element.options || [])
+                        .map(option =>
+                            `{ MBTNC_AddButton = ${luaQuote(option)} },`
+                        )
+                        .join("\n\t\t\t\t\t");
+
+                    return `${internalLabel} = {
+                    LINKS_Name = ${displayName},
+                    LINKID_DataType = "Number",
+                    INPID_InputControl = "MultiButtonControl",
+                    INP_Default = ${Number(element.defaultValue) || 0},
+                    INP_Integer = true,
+                    INP_MinScale = 0,
+                    INP_MaxScale = 100,
+                    INP_MinAllowed = -1000000,
+                    INP_MaxAllowed = 1000000,
+                    INP_SplineType = "Default",
+                    ${options}
+                    MBTNC_ShowBasicButton = true,
+                    MBTNC_ShowToolTip = false,
+                    MBTNC_ShowName = false,
+                    MBTNC_StretchToFit = false,
+                    INP_External = false,
+                    ${executeOnChange}
+                    ICS_ControlPage = "Controls",
+                },`;
+                }
+
+                default:
+                    throw new Error(`Unsupported element type: ${element.type}`);
+            }
+        }
+
+
+        // ----------------------------------------
+        // INPUT VALUES
+        // ----------------------------------------
+
+        function generateInputs(elements) {
+            return elements
+                .filter(element => element.type === "textInput")
+                .map(element =>
+                    `${getInternalLabel(element)} = Input {
+                    Value = ${luaQuote(element.defaultValue)},
+                },`
+                )
+                .join("\n\t\t\t\t");
+        }
+
+
+        // ----------------------------------------
+        // CTRL REFRESH LOGIC
+        // ----------------------------------------
+
+        function generateRefreshCode() {
+            const ctrlIds = db.nodes.CTRL.elements;
+            const ctrlOutIds = new Set(db.nodes.CTRL_OUT.elements);
+
+            // Only synchronize elements explicitly listed in BOTH nodes.
+            const sharedElements = ctrlIds
+                .filter(id => ctrlOutIds.has(id))
+                .map(id => db.elements[id])
+                .filter(element =>
+                    ["textInput", "sliderInput", "multiButtonInput"]
+                        .includes(element.type)
+                );
+
+            const lines = [];
+
+            // OPTIONS TO DO
+            //          | << INDENT IS HERE
+
+            sharedElements.forEach((element, index) => {
+                const internalLabel = getInternalLabel(element);
+
+                if (element.type === "textInput") {
+                    // START STRING MANIPULATION
+                    lines.push(
+                        `local ${internalLabel} = tool:GetInput("${internalLabel}")`,
+                        `${internalLabel} = ${internalLabel}:gsub("\\r\\n", "\\n")  -- Handles Windows line endings`,
+                    );
+                    // REMOVE DOUBLE SPACES
+                    if(element.removeDoubleSpaces) {
+                        lines.push(
+                            `${internalLabel} = ${internalLabel}:gsub(" +", " ") -- Remove multiple spaces`
+                        );
+                    }
+                    // MAKE STRING UPPER CASE
+                    if(element.upperCase) {
+                        lines.push(
+                            `${internalLabel} = string.upper(${internalLabel}):gsub("\\195[\\128-\\191]", { ["à"]="À", ["á"]="Á", ["â"]="Â", ["ã"]="Ã", ["ä"]="Ä", ["å"]="Å", ["æ"]="Æ", ["ç"]="Ç", ["è"]="È", ["é"]="É", ["ê"]="Ê", ["ë"]="Ë", ["ì"]="Ì", ["í"]="Í", ["î"]="Î", ["ï"]="Ï", ["ñ"]="Ñ", ["ò"]="Ò", ["ó"]="Ó", ["ô"]="Ô", ["õ"]="Õ", ["ö"]="Ö", ["ø"]="Ø", ["ù"]="Ù", ["ú"]="Ú", ["û"]="Û", ["ü"]="Ü", ["ý"]="Ý", ["ß"]="SS" }):gsub("[\\196\\197][\\128-\\191]", { ["ą"]="Ą", ["ć"]="Ć", ["č"]="Č", ["đ"]="Đ", ["ę"]="Ę", ["ě"]="Ě", ["ł"]="Ł", ["ń"]="Ń", ["ő"]="Ő", ["œ"]="Œ", ["ř"]="Ř", ["ś"]="Ś", ["š"]="Š", ["ű"]="Ű", ["ż"]="Ż", ["ž"]="Ž" })`
+                        );
+                    }
+
+                    // LINE SPLITTING
+                    if(element.maxLines > 0 || element.trimLines || element.removeEmptyLines) {
+                        // Extra indent for the insert/break lines when they sit inside the empty-line guard
+                        const pad = element.removeEmptyLines ? "\t\t" : "\t";
+
+                        // START LINE SPLIT (one header for every case)
+                        lines.push(
+                            `local ${internalLabel}Lines = {} -- Object to store split lines`,
+                            `for line in (${internalLabel} .. "\\n"):gmatch("(.-)\\n") do -- Split into lines`
+                        );
+
+                        // INDIVIDUAL LINE TRIM
+                        if(element.trimLines) {
+                            lines.push(
+                                `\tline = line:gsub("^%s*(.-)%s*$", "%1") -- Remove leading and trailing whitespace`
+                            );
+                        }
+
+                        // OPEN EMPTY-LINE GUARD
+                        if(element.removeEmptyLines) {
+                            lines.push(
+                                `\tif line:match("%S") then -- Skip empty lines`
+                            );
+                        }
+
+                        // INSERT + MAX LINES
+                        lines.push(
+                            `${pad}table.insert(${internalLabel}Lines, line)`
+                        );
+                        if(element.maxLines > 0) {
+                            lines.push(
+                                `${pad}if #${internalLabel}Lines >= ${element.maxLines} then break end -- Max ${element.maxLines} lines`
+                            );
+                        }
+
+                        // CLOSE EMPTY-LINE GUARD
+                        if(element.removeEmptyLines) {
+                            lines.push(
+                                `\tend`
+                            );
+                        }
+
+                        // END LINE SPLIT
+                        lines.push(
+                            `end`,
+                            `${internalLabel} = table.concat(${internalLabel}Lines, "\\n") -- Reassemble the lines`
+                        );
+                    }
+                    // END STRING MANIPULATION
+                    lines.push(
+                        `comp.CTRL_OUT:SetInput("${internalLabel}", ${internalLabel})`
+                    );
+                } else {
+                    lines.push(
+                        `comp.CTRL_OUT:SetInput("${internalLabel}", tool:GetInput("${internalLabel}"))`
+                    );
+                }
+            });
+
+            return lines.join("\n\t\t\t\t\t\t");
+        }
+
+
+        // ----------------------------------------
+        // COMPLETE FUSION TEXT
+        // ----------------------------------------
+
+        function buildFusionText(nodeName) {
+            if (!["CTRL", "CTRL_OUT"].includes(nodeName)) {
+                throw new Error(`Unknown node: ${nodeName}`);
+            }
+
+            const elements = getNodeElements(nodeName);
+
+            // Internal labels must be unique within this node.
+            const labels = elements.map(getInternalLabel);
+
+            if (new Set(labels).size !== labels.length) {
+                throw new Error(`Duplicate internal labels in ${nodeName}.`);
+            }
+
+            const inputs = nodeName === "CTRL" ? `\n\t\t\t\t${generateInputs(elements)}\n\t\t\t` : "";
+            const userControls = elements
+                .map(element => generateUserControl(element, nodeName))
+                .join("\n\t\t\t\t");
+
+            const refreshControl = nodeName === "CTRL"
+                ? `
+				-- REFRESH
+				-- ----------------
+                RefreshEmpty = { ICS_ControlPage = "Controls", LINKS_Name = "", LINKID_DataType = "Number", LBLC_DropDownButton = false, INPID_InputControl = "LabelControl", INP_External = false, INP_Passive = true, },
+                Refresh = {
+                    LINKS_Name = "Refresh",
+                    LINKID_DataType = "Number",
+                    INPID_InputControl = "SliderControl",
+                    INP_Default = 0,
+                    INP_Integer = true,
+                    ICS_ControlPage = "Controls",
+                    INPS_ExecuteOnChange = [=[
+                        ${generateRefreshCode()}
+                    ]=],
+                },`
+                : "";
+
+            return `
+{
+    Tools = ordered() {
+        ${nodeName} = Transform {
+            CtrlWZoom = false,
+            Inputs = {${inputs}},
+            ViewInfo = OperatorInfo { Pos = { 0, 0 } },
+            Colors = {
+                TileColor = {
+                    R = 0.474509803921569,
+                    G = 0.658823529411765,
+                    B = 0.815686274509804
+                },
+            },
+            UserControls = ordered() {
+                OldControlNest = { LBLC_DropDownButton = true, INPID_InputControl = "LabelControl", LBLC_NumInputs = 17, INP_External = false, INP_Passive = true, ICS_ControlPage = "Common", LBLC_NestLevel = 1, LBLCID_HideUpToID = "Direction", LINKS_Name = "Old Control", },
+                TransformNest = { ICS_ControlPage = "Common", },
+                Center = { ICS_ControlPage = "Common", },
+                Pivot = { ICS_ControlPage = "Common", },
+                UseSizeAndAspect = { ICS_ControlPage = "Common", },
+                Size = { ICS_ControlPage = "Common", },
+                Aspect = { ICS_ControlPage = "Common", },
+                Angle = { ICS_ControlPage = "Common", },
+                FlipHoriz = { ICS_ControlPage = "Common", },
+                FlipVert = { ICS_ControlPage = "Common", },
+                Edges = { ICS_ControlPage = "Common", },
+                FilterMethod = { ICS_ControlPage = "Common", },
+                InvertTransform = { ICS_ControlPage = "Common", },
+                FlattenTransform = { ICS_ControlPage = "Common", },
+                ReferenceSize = { ICS_ControlPage = "Common", },
+                Width = { ICS_ControlPage = "Common", },
+                Height = { ICS_ControlPage = "Common", },
+                UseFrameFormatSettings = { ICS_ControlPage = "Common", },
+                
+				-- USER INPUTS
+				-- -------------------
+                ${userControls}
+                ${refreshControl}
+            },
+        },
+    },
+    ActiveTool = "${nodeName}"
+}`;
+        }
+
+        // ----------------------------------------
+        // COPY TO CLIPBOARD
+        // ----------------------------------------
+
+        async function copyToClipboard(text) {
+            try {
+                await navigator.clipboard.writeText(text);
+                return;
+            } catch (error) {
+                // Clipboard API may be unavailable on some pages.
+                // Try the fallback below.
+            }
+
+            const textarea = document.createElement("textarea");
+            textarea.value = text;
+            textarea.style.position = "fixed";
+            textarea.style.opacity = "0";
+
+            document.body.appendChild(textarea);
+            textarea.select();
+
+            const copied = document.execCommand("copy");
+            textarea.remove();
+
+            if (!copied) {
+                throw new Error("Clipboard copy failed.");
+            }
+        }
+
+
+        // ----------------------------------------
+        // COPY BUTTON INTERACTION
+        // ----------------------------------------
+
+        document.querySelectorAll(".card-holder-copy-btn").forEach(button => {
+            button.addEventListener("mouseover", () => {
+                // highlight the matching column based on the button data-column
+                const column = button.dataset.column;
+                document.querySelectorAll(`.card-holder[data-column="${column}"]`).forEach(col => {
+                    col.classList.add("highlighted");
+                });
+            });
+            button.addEventListener("mouseout", () => {
+                // remove highlight from all columns
+                document.querySelectorAll(".card-holder").forEach(col => {
+                    col.classList.remove("highlighted");
+                });
+            });
+        });
+
+        async function generateFusionText(nodeName) {
+            const button = document.querySelector(
+                `button[onclick="generateFusionText('${nodeName}')"]`
+            );
+
+            try {
+                const fusionText = buildFusionText(nodeName);
+                await copyToClipboard(fusionText);
+
+                if (button) {
+                    // Save the original label once
+                    if (!button.dataset.originalText) {
+                        button.dataset.originalText = button.textContent;
+                    }
+
+                    button.textContent = "COPIED 👍";
+                    button.classList.add("succeed");
+
+                    // Reset the button after 1.5 seconds
+                    setTimeout(() => {
+                        button.textContent = button.dataset.originalText;
+                        button.classList.remove("succeed");
+                    }, 1500);
+                }
+
+                console.log("Fusion text copied to clipboard.");
+                console.log(fusionText);
+
+                return fusionText;
+
+            } catch (error) {
+                console.error("Fusion generation failed:", error);
+                alert("Copy failed: " + error.message);
+                return null;
+            }
+        }
+
+        
+        /* ==========================================================================
+        INITIAL RENDER
+        ========================================================================== */
+
+        loadDatabase();
+        renderApp();
+
+
+    </script>
+
+</body>
+
+</html>
