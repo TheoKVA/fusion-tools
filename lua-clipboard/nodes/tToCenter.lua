@@ -1,0 +1,208 @@
+{
+	Tools = ordered() {
+		tToCenter = Transform {
+			CtrlWZoom = false,
+			Inputs = {
+				LeftDoD = Input { Expression = "(self.Input.DataWindow[1]+1)/self.Input.Width", },
+				RightDoD = Input { Expression = "(self.Input.DataWindow[3]-1)/self.Input.Width", },
+				BottomDoD = Input { Expression = "(self.Input.DataWindow[2]+1)/self.Input.Height", },
+				TopDoD = Input { Expression = "(self.Input.DataWindow[4]-1)/self.Input.Height", },
+				Center = Input { 
+					Expression = "Point(0.5, 0.5) + Point( 0.5-(RightDoD-(RightDoD-LeftDoD)/2), 0.5-(BottomDoD-(BottomDoD-TopDoD)/2) )"
+					-- Expression = "Point(0.5, 0.5) + Point( iif(OutputReference==1, (OutputX/iif(CanvasSizeReference == 0, CompWidth, CanvasWidth)), (OutputX) ), iif(OutputReference==1, (1-OutputY/iif(CanvasSizeReference == 0, CompHeight, CanvasHeight)), (OutputY) ) ) - Point( iif(InputReference==1, (InputX/iif(CanvasSizeReference == 0, CompWidth, CanvasWidth)), (InputX) ), iif(InputReference==1, (1-InputY/iif(CanvasSizeReference == 0, CompHeight, CanvasHeight)), (InputY) ) )",
+				},
+				Pivot = Input {
+					Expression = "Point(1, 1) - Center"
+				},
+			},
+			ViewInfo = OperatorInfo { Pos = { 228.853, 183.918 } },
+			UserControls = ordered() {
+				-- ===========
+				-- == EMPTY ==
+				-- ===========
+				OldControlNest = { LINKS_Name = "Old Control", INPID_InputControl = "LabelControl", LBLC_DropDownButton = true, LBLC_NumInputs = 17, LBLC_NestLevel = 1, LBLCID_HideUpToID = "Direction", ICS_ControlPage = "Data", INP_External = false, INP_Passive = true, },
+				TransformNest = { ICS_ControlPage = "Data" },
+				Center = { ICS_ControlPage = "Data" },
+				Pivot = { ICS_ControlPage = "Data" },
+				UseSizeAndAspect = { ICS_ControlPage = "Data" },
+				Size = { ICS_ControlPage = "Data" },
+				Aspect = { ICS_ControlPage = "Data" },
+				Angle = { ICS_ControlPage = "Data" },
+				FlipHoriz = { ICS_ControlPage = "Data" },
+				FlipVert = { ICS_ControlPage = "Data" },
+				Edges = { ICS_ControlPage = "Data" },
+				FilterMethod = { ICS_ControlPage = "Data" },
+				InvertTransform = { ICS_ControlPage = "Data" },
+				FlattenTransform = { ICS_ControlPage = "Data" },
+				ReferenceSize = { ICS_ControlPage = "Data" },
+				Width = { ICS_ControlPage = "Data" },
+				Height = { ICS_ControlPage = "Data" },
+				UseFrameFormatSettings = { ICS_ControlPage = "Data" },
+
+				
+				LeftDoD = {
+					LINKS_Name = "LeftDoD",
+					LINKID_DataType = "Number",
+					INPID_InputControl = "SliderControl",
+					INP_Default = 0,
+					INP_Integer = false,
+					INP_MinScale = 0,
+					INP_MaxScale = 1,
+					INP_MinAllowed = -1000000,
+					INP_MaxAllowed = 1000000,
+					INP_SplineType = "Default",
+					INP_External = false,
+					-- IC_Visible = false,
+					ICS_ControlPage = "Data",
+				},
+				RightDoD = {
+					LINKS_Name = "RightDoD",
+					LINKID_DataType = "Number",
+					INPID_InputControl = "SliderControl",
+					INP_Default = 0,
+					INP_Integer = false,
+					INP_MinScale = 0,
+					INP_MaxScale = 1,
+					INP_MinAllowed = -1000000,
+					INP_MaxAllowed = 1000000,
+					INP_SplineType = "Default",
+					INP_External = false,
+					-- IC_Visible = false,
+					ICS_ControlPage = "Data",
+				},
+				BottomDoD = {
+					LINKS_Name = "BottomDoD",
+					LINKID_DataType = "Number",
+					INPID_InputControl = "SliderControl",
+					INP_Default = 0,
+					INP_Integer = false,
+					INP_MinScale = 0,
+					INP_MaxScale = 1,
+					INP_MinAllowed = -1000000,
+					INP_MaxAllowed = 1000000,
+					INP_SplineType = "Default",
+					INP_External = false,
+					-- IC_Visible = false,
+					ICS_ControlPage = "Data",
+				},
+				TopDoD = {
+					LINKS_Name = "TopDoD",
+					LINKID_DataType = "Number",
+					INPID_InputControl = "SliderControl",
+					INP_Default = 0,
+					INP_Integer = false,
+					INP_MinScale = 0,
+					INP_MaxScale = 1,
+					INP_MinAllowed = -1000000,
+					INP_MaxAllowed = 1000000,
+					INP_SplineType = "Default",
+					INP_External = false,
+					-- IC_Visible = false,
+					ICS_ControlPage = "Data",
+				},
+
+				-- =======
+				--  INPUT
+				Info1 = {
+					LINKS_Name = "Center the input based on its current value.",
+				    LINKID_DataType = "Number",
+					INPID_InputControl = "LabelControl",
+					LBLC_DropDownButton = false,
+					-- LBLC_NumInputs = 3,
+					-- LBLC_DefaultMode = 1,
+					INP_Passive = true,
+					INP_External = false,
+					ICS_ControlPage = "Controls",
+				},
+
+				-- ========
+				--  OUTPUT
+				Empty2 = {
+					LINKS_Name = "",
+					LINKID_DataType = "Number",
+					LBLC_DropDownButton = false,
+					INPID_InputControl = "LabelControl",
+					INP_External = false,
+					INP_Passive = true,
+					ICS_ControlPage = "Controls",
+				},
+				Info2 = {
+					LINKS_Name = "Additionnal displacement",
+				    LINKID_DataType = "Number",
+					INPID_InputControl = "LabelControl",
+					LBLC_DropDownButton = false,
+					-- LBLC_NumInputs = 7,
+					-- LBLC_DefaultMode = 1,
+					INP_Passive = true,
+					INP_External = false,
+					ICS_ControlPage = "Controls",
+				},
+				OutputReference = {
+					LINKS_Name = "Coordinates",
+					LINKID_DataType = "Number",
+					INPID_InputControl = "MultiButtonControl",
+					INP_Default = 1,
+					INP_Integer = true,
+					INP_SplineType = "Default",
+					{ MBTNC_AddButton = "FUSION (abs)" },
+					{ MBTNC_AddButton = "AE (px)" },
+					MBTNC_ShowBasicButton = true,
+					MBTNC_ShowToolTip = false,
+					MBTNC_ShowName = false,
+					MBTNC_StretchToFit = false,
+					INP_External = false,
+					ICS_ControlPage = "Controls",
+				},
+				OutputX = {
+					LINKS_Name = "... to X",
+				 	LINKID_DataType = "Number",
+				 	INPID_InputControl = "SliderControl",
+					INP_Default = 0,
+				 	INP_MinScale = -2000,
+				 	INP_MaxScale = 2000,
+				 	ICS_ControlPage = "Controls",
+				},
+				OutputY = {
+					LINKS_Name = "... to Y",
+				 	LINKID_DataType = "Number",
+				 	INPID_InputControl = "SliderControl",
+					INP_Default = 0,
+				 	INP_MinScale = -2000,
+				 	INP_MaxScale = 2000,
+				 	ICS_ControlPage = "Controls",
+				},
+
+				-- ===========
+				--  COPYRIGHT
+				CopyrightEmpty = {
+					LINKS_Name = "",
+					LINKID_DataType = "Number",
+					LBLC_DropDownButton = false,
+					INPID_InputControl = "LabelControl",
+					INP_External = false,
+					INP_Passive = true,
+					ICS_ControlPage = "Controls",
+				},
+				Author = {
+					LINKS_Name = "Author: Theo Francart",
+					LINKID_DataType = "Number",
+					INPID_InputControl = "LabelControl",
+					LBLC_DropDownButton = false,
+					INP_Passive = true,
+					INP_External = false,
+					ICS_ControlPage = "Controls",
+				},
+				Copyright = {
+					LINKS_Name = "@RTS - Radio Television Suisse",
+					LINKID_DataType = "Number",
+					INPID_InputControl = "LabelControl",
+					LBLC_DropDownButton = false,
+					INP_Passive = true,
+					INP_External = false,
+					ICS_ControlPage = "Controls",
+				},
+			}
+		}
+	},
+	ActiveTool = "tTransform"
+}
