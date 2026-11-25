@@ -993,11 +993,19 @@
                 }
             });
 
+            // Add the input listener to mark the internal label as marked
+            const internalLabelInput = panel.querySelector('[data-field="internalLabel"]');
+            if(internalLabelInput) {
+                internalLabelInput.oninput = () => {
+                    element.internalLabelSet = true; // Mark as manually set.
+                };
+            }
+
             // Add an input listener to the label field to update the internalLabel automatically.
             const labelInput = panel.querySelector('[data-field="label"]');
             if (labelInput) {
                 labelInput.oninput = () => {
-                    if (element.internalLabelSet) return; // Don't override if the user has set it manually.
+                    if (element.internalLabelSet || !internalLabelInput) return; // Don't override if the user has set it manually.
                     const prefixes = {
                         textInput: "InputText",
                         sliderInput: "InputSlider",
@@ -1012,12 +1020,9 @@
                         .replace(/\s+/g, " ")
                         .replace(/\b\w/g, char => char.toUpperCase())
                         .replace(/\s/g, "");
-                    panel.querySelector('[data-field="internalLabel"]').value = (prefixes[element.type] || "Input") + cleanLabel;
+                    internalLabelInput.value = (prefixes[element.type] || "Input") + cleanLabel;                    
                 };
             }
-            panel.querySelector('[data-field="internalLabel"]').oninput = () => {
-                element.internalLabelSet = true; // Mark as manually set.
-            };
 
             panel.classList.remove("hidden");
             overlay.classList.remove("hidden");
