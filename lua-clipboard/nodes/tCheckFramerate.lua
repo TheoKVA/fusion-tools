@@ -23,7 +23,7 @@
 				},
 			},
 			ViewInfo = OperatorInfo { Pos = { 648.29, 216.805 } },
-			Colors = { TileColor = { R = 0.372549019607843, G = 0.6, B = 0.125490196078431 }, },
+			Colors = { TileColor = { R = 0.474509803921569, G = 0.658823529411765, B = 0.815686274509804 }, },
 			UserControls = ordered() { 
 				fps = {
 					INP_MaxAllowed = 1000000, 

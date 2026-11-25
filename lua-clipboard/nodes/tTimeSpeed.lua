@@ -10,6 +10,7 @@
 				Speed = Input { Expression = "iif(ButtonInput == 0, 0.5, 2)", }
 			},
 			ViewInfo = OperatorInfo { Pos = { 720.717, 256.646 } },
+			Colors = { TileColor = { R = 0.474509803921569, G = 0.658823529411765, B = 0.815686274509804 }, },
 			UserControls = ordered() {
 				-- ===========
 				-- == EMPTY ==

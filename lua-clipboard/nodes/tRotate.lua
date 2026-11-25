@@ -5,7 +5,7 @@
 			Inputs = {
 				InputRotation = Input { Value = 45, },
 				Pivot = Input { 
-					Expression = "Point( iif(InputReference==1, (InputX/comp:GetPrefs(\"Comp.FrameFormat.Width\")), InputX ), iif(InputReference==1, (1-InputY/comp:GetPrefs(\"Comp.FrameFormat.Height\")), InputY ) )",
+					Expression = "Point( iif(InputReference==1, (InputX/self.Input.Width), InputX ), iif(InputReference==1, (1-InputY/self.Input.Height), InputY ) )",
 				},
 				Angle = Input {
 					Expression = "-InputRotation"
