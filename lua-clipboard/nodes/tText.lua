@@ -40,6 +40,36 @@
 				HorizontallyJustified = { ICS_ControlPage = "Text" },
 				Direction = { ICS_ControlPage = "Text" },
 				LineDirection = { ICS_ControlPage = "Text" },
+				
+				title = {
+					LINKS_Name = "Output Size",
+					LINKID_DataType = "Number",
+					LBLC_DropDownButton = false,
+					INPID_InputControl = "LabelControl",
+					INP_External = false,
+					INP_Passive = true,
+					ICS_ControlPage = "Text",
+				},
+				UseFrameFormatSettings  = {
+					LINKS_Name = "Auto Resolution",
+					ICS_ControlPage = "Text",
+				},
+				Width  = {
+					ICS_ControlPage = "Text",
+				},
+				Height  = {
+					ICS_ControlPage = "Text",
+				},
+				InfoTitle = {
+					LINKS_Name = "/!\\ IMAGE SIZE is set in TEXT TAB /!\\",
+					LINKID_DataType = "Number",
+					LBLC_DropDownButton = false,
+					INPID_InputControl = "LabelControl",
+					INP_External = false,
+					INP_Passive = true,
+					ICS_ControlPage = "Image",
+				},
+
 				Empty_1 = { LINKS_Name = "", LINKID_DataType = "Number", LBLC_DropDownButton = false, INPID_InputControl = "LabelControl", INP_Passive = true, INP_External = false, ICS_ControlPage = "Text",},
 				Update = {
 					LINKS_Name = "Update Size from TextCalculator",
@@ -60,6 +90,18 @@
 						if not tTextCalculator then
 							print('no tTextCalculator found')
 							return
+						end
+				
+						local Font = tTextCalculator:GetInput("Font")
+						if Font then
+							print("new Font = ", tTextCalculator:GetInput("Font"))
+							tool:SetInput("Font", Font)
+						end
+						
+						local Style = tTextCalculator:GetInput("Style")
+						if Style then
+							print("new Style = ", tTextCalculator:GetInput("Style"))
+							tool:SetInput("Style", Style)
 						end
 
 						local Size = tTextCalculator:GetInput("Size")

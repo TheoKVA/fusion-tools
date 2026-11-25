@@ -12,6 +12,7 @@
 				PixelAspect = Input { Value = { 1, 1 }, },
 				UseFrameFormatSettings = Input { Value = 1, },
 				ClippingMode = Input { Value = FuID { "None" }, },
+				OutputSize = Input { Value = FuID { "Custom" }, },
 
 				Center = Input { 
 					Value = { 0.5, 0.5 },
@@ -144,6 +145,44 @@
 					MBTNC_StretchToFit = false,
 					INP_External = false,
 					ICS_ControlPage = "Controls"
+				},
+
+				Empty_title = {
+					LINKS_Name = "",
+					LINKID_DataType = "Number",
+					LBLC_DropDownButton = false,
+					INPID_InputControl = "LabelControl",
+					INP_External = false,
+					INP_Passive = true,
+					ICS_ControlPage = "Controls",
+				},
+				title = {
+					LINKS_Name = "Output Size",
+					LINKID_DataType = "Number",
+					LBLC_DropDownButton = false,
+					INPID_InputControl = "LabelControl",
+					INP_External = false,
+					INP_Passive = true,
+					ICS_ControlPage = "Controls",
+				},
+				UseFrameFormatSettings  = {
+					LINKS_Name = "Auto Resolution",
+					ICS_ControlPage = "Controls",
+				},
+				MaskWidth  = {
+					ICS_ControlPage = "Controls",
+				},
+				MaskHeight  = {
+					ICS_ControlPage = "Controls",
+				},
+				InfoTitle = {
+					LINKS_Name = "/!\\ IMAGE SIZE is set in CONTROLS TAB /!\\",
+					LINKID_DataType = "Number",
+					LBLC_DropDownButton = false,
+					INPID_InputControl = "LabelControl",
+					INP_External = false,
+					INP_Passive = true,
+					ICS_ControlPage = "Image",
 				},
 				
 
