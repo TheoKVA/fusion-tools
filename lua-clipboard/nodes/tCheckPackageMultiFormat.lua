@@ -1,13 +1,24 @@
 {
 	Tools = ordered() {
-		PipeRouter1 = PipeRouter {
-			ViewInfo = PipeRouterInfo { Pos = { -278.019, -192.439 } },
+		ConnectHere = Transform {
+			NameSet = true,
+			ViewInfo = OperatorInfo { Pos = { -185.643, 55.8528 } },
+			Colors = { TileColor = { R = 0.474509803921569, G = 0.658823529411765, B = 0.815686274509804 }, }
 		},
-		tCheckBG_Merge_0 = Merge {
+		PipeRouter1 = PipeRouter {
+			Inputs = {
+				Input = Input {
+					SourceOp = "ConnectHere",
+					Source = "Output",
+				}
+			},
+			ViewInfo = PipeRouterInfo { Pos = { -103.31, 55.8528 } },
+		},
+		tCheckBG_Merge_1 = Merge {
 			NameSet = true,
 			Inputs = {
 				Background = Input {
-					SourceOp = "tCheckBG_0",
+					SourceOp = "tCheckBG_1",
 					Source = "Output",
 				},
 				Foreground = Input {
@@ -16,7 +27,7 @@
 				},
 				PerformDepthMerge = Input { Value = 0, }
 			},
-			ViewInfo = OperatorInfo { Pos = { -170.805, -192.439 } },
+			ViewInfo = OperatorInfo { Pos = { 2.0237, 133.429 } },
 			UserControls = ordered() {
 				Info_Param_1 = {
 					LINKID_DataType = "Number",
@@ -36,7 +47,7 @@
 					INP_External = false,
 					LINKS_Name = " ",
 				},
-				OldControlNest = { LBLC_DropDownButton = true, INPID_InputControl = "LabelControl", LBLC_NumInputs = 22, INP_External = false, ICS_ControlPage = "Merge", LBLCID_HideUpToID = "Direction", INP_Passive = true, LBLC_NestLevel = 1, LINKS_Name = "Old Control", },
+				OldControlNest = { LBLC_DropDownButton = true, INPID_InputControl = "LabelControl", LBLC_NumInputs = 22, INP_External = false, ICS_ControlPage = "Merge", LBLCID_HideUpToID = "Direction", LBLC_NestLevel = 1, INP_Passive = true, LINKS_Name = "Old Control", },
 				Center = { ICS_ControlPage = "Merge", },
 				Size = { ICS_ControlPage = "Merge", },
 				Angle = { ICS_ControlPage = "Merge", },
@@ -70,15 +81,15 @@
 				Width = Input { Value = 1920, },
 				Height = Input { Value = 1080, }
 			},
-			ViewInfo = OperatorInfo { Pos = { -170.805, -154.91 } },
+			ViewInfo = OperatorInfo { Pos = { 3.9037, 93.3818 } },
 			UserControls = ordered() {
 				title = {
-					LINKID_DataType = "Number",
-					LBLC_DropDownButton = false,
 					ICS_ControlPage = "Color",
-					INPID_InputControl = "LabelControl",
-					INP_Passive = true,
+					LBLC_DropDownButton = false,
+					LINKID_DataType = "Number",
 					INP_External = false,
+					INP_Passive = true,
+					INPID_InputControl = "LabelControl",
 					LINKS_Name = "Output Size",
 				},
 				UseFrameFormatSettings = {
@@ -91,48 +102,48 @@
 					ICS_ControlPage = "Color",
 				},
 				InfoTitle = {
-					LINKID_DataType = "Number",
-					LBLC_DropDownButton = false,
 					ICS_ControlPage = "Image",
-					INPID_InputControl = "LabelControl",
-					INP_Passive = true,
+					LBLC_DropDownButton = false,
+					LINKID_DataType = "Number",
 					INP_External = false,
+					INP_Passive = true,
+					INPID_InputControl = "LabelControl",
 					LINKS_Name = "/!\\ IMAGE SIZEE is set in COLOR TAB /!\\",
 				},
 				CopyrightEmpty = {
-					LINKID_DataType = "Number",
-					LBLC_DropDownButton = false,
 					ICS_ControlPage = "Color",
-					INPID_InputControl = "LabelControl",
-					INP_Passive = true,
+					LBLC_DropDownButton = false,
+					LINKID_DataType = "Number",
 					INP_External = false,
+					INP_Passive = true,
+					INPID_InputControl = "LabelControl",
 					LINKS_Name = "",
 				},
 				Author = {
-					LINKID_DataType = "Number",
-					LBLC_DropDownButton = false,
 					ICS_ControlPage = "Color",
-					INPID_InputControl = "LabelControl",
-					INP_Passive = true,
+					LBLC_DropDownButton = false,
+					LINKID_DataType = "Number",
 					INP_External = false,
+					INP_Passive = true,
+					INPID_InputControl = "LabelControl",
 					LINKS_Name = "Author: Theo Francart",
 				},
 				Copyright = {
-					LINKID_DataType = "Number",
-					LBLC_DropDownButton = false,
 					ICS_ControlPage = "Color",
-					INPID_InputControl = "LabelControl",
-					INP_Passive = true,
+					LBLC_DropDownButton = false,
+					LINKID_DataType = "Number",
 					INP_External = false,
+					INP_Passive = true,
+					INPID_InputControl = "LabelControl",
 					LINKS_Name = "@RTS - Radio Television Suisse",
 				}
 			}
 		},
-		tCheckBG_Merge_1 = Merge {
+		tCheckBG_Merge_0 = Merge {
 			NameSet = true,
 			Inputs = {
 				Background = Input {
-					SourceOp = "tCheckBG_1",
+					SourceOp = "tCheckBG_0",
 					Source = "Output",
 				},
 				Foreground = Input {
@@ -141,7 +152,7 @@
 				},
 				PerformDepthMerge = Input { Value = 0, }
 			},
-			ViewInfo = OperatorInfo { Pos = { -172.685, -114.863 } },
+			ViewInfo = OperatorInfo { Pos = { 3.9037, 55.8528 } },
 			UserControls = ordered() {
 				Info_Param_1 = {
 					ICS_ControlPage = "Merge",
@@ -186,79 +197,11 @@
 				Merge = { ICS_ControlPage = "Merge", }
 			}
 		},
-		tCheckBG_1 = Background {
-			NameSet = true,
-			Inputs = {
-				GlobalOut = Input { Value = 199, },
-				["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
-				TopLeftAlpha = Input { Value = 0, },
-				Width = Input { Value = 1080, },
-				Height = Input { Value = 1920, }
-			},
-			ViewInfo = OperatorInfo { Pos = { -172.685, -77.3341 } },
-			UserControls = ordered() {
-				title = {
-					ICS_ControlPage = "Color",
-					LBLC_DropDownButton = false,
-					LINKID_DataType = "Number",
-					INP_External = false,
-					INP_Passive = true,
-					INPID_InputControl = "LabelControl",
-					LINKS_Name = "Output Size",
-				},
-				UseFrameFormatSettings = {
-					ICS_ControlPage = "Color",
-				},
-				Width = {
-					ICS_ControlPage = "Color",
-				},
-				Height = {
-					ICS_ControlPage = "Color",
-				},
-				InfoTitle = {
-					ICS_ControlPage = "Image",
-					LBLC_DropDownButton = false,
-					LINKID_DataType = "Number",
-					INP_External = false,
-					INP_Passive = true,
-					INPID_InputControl = "LabelControl",
-					LINKS_Name = "/!\\ IMAGE SIZEE is set in COLOR TAB /!\\",
-				},
-				CopyrightEmpty = {
-					ICS_ControlPage = "Color",
-					LBLC_DropDownButton = false,
-					LINKID_DataType = "Number",
-					INP_External = false,
-					INP_Passive = true,
-					INPID_InputControl = "LabelControl",
-					LINKS_Name = "",
-				},
-				Author = {
-					ICS_ControlPage = "Color",
-					LBLC_DropDownButton = false,
-					LINKID_DataType = "Number",
-					INP_External = false,
-					INP_Passive = true,
-					INPID_InputControl = "LabelControl",
-					LINKS_Name = "Author: Theo Francart",
-				},
-				Copyright = {
-					ICS_ControlPage = "Color",
-					LBLC_DropDownButton = false,
-					LINKID_DataType = "Number",
-					INP_External = false,
-					INP_Passive = true,
-					INPID_InputControl = "LabelControl",
-					LINKS_Name = "@RTS - Radio Television Suisse",
-				}
-			}
-		},
-		tTransform_2 = Transform {
-			CtrlWZoom = false,
+		tTransform_1 = Transform {
 			NameSet = true,
 			Inputs = {
 				Input = Input {
-					SourceOp = "tCheckBG_Merge_2",
+					SourceOp = "tCheckBG_Merge_1",
 					Source = "Output",
 				},
 				Center = Input { Expression = "Point(0.5, 0.5) - Point( iif(InputReference==0,(InputX),(InputX/Width)), iif(InputReference==0,(InputY),(1-InputY/Height)) ) + Point( iif(OutputReference==0,(OutputX),(OutputX/Width) ), iif(OutputReference==0,(OutputY),(1-OutputY/Height)) )", },
@@ -268,9 +211,11 @@
 				CanvasSizeInputs = Input { Expression = "iif(CanvasSizeReference == 1,1,0)", },
 				InputReference = Input { Value = 0, },
 				InputX = Input { Value = 0.5, },
-				InputY = Input { Value = 0.5, }
+				InputY = Input { Value = 0.5, },
+				OutputX = Input { Value = 540, },
+				OutputY = Input { Value = 960, }
 			},
-			ViewInfo = OperatorInfo { Pos = { -55.3521, -35.1812 } },
+			ViewInfo = OperatorInfo { Pos = { 123.748, 133.429 } },
 			UserControls = ordered() {
 				OldControlNest = { LBLC_DropDownButton = true, INPID_InputControl = "LabelControl", LBLC_NumInputs = 17, INP_External = false, ICS_ControlPage = "Controls", LBLCID_HideUpToID = "Direction", LBLC_NestLevel = 1, INP_Passive = true, LINKS_Name = "Old Control", },
 				TransformNest = { ICS_ControlPage = "Controls", },
@@ -482,6 +427,73 @@
 				}
 			}
 		},
+		tCheckBG_1 = Background {
+			NameSet = true,
+			Inputs = {
+				GlobalOut = Input { Value = 199, },
+				["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
+				TopLeftAlpha = Input { Value = 0, },
+				Width = Input { Value = 1080, },
+				Height = Input { Value = 1920, }
+			},
+			ViewInfo = OperatorInfo { Pos = { 2.0237, 170.958 } },
+			UserControls = ordered() {
+				title = {
+					LINKID_DataType = "Number",
+					LBLC_DropDownButton = false,
+					ICS_ControlPage = "Color",
+					INPID_InputControl = "LabelControl",
+					INP_Passive = true,
+					INP_External = false,
+					LINKS_Name = "Output Size",
+				},
+				UseFrameFormatSettings = {
+					ICS_ControlPage = "Color",
+				},
+				Width = {
+					ICS_ControlPage = "Color",
+				},
+				Height = {
+					ICS_ControlPage = "Color",
+				},
+				InfoTitle = {
+					LINKID_DataType = "Number",
+					LBLC_DropDownButton = false,
+					ICS_ControlPage = "Image",
+					INPID_InputControl = "LabelControl",
+					INP_Passive = true,
+					INP_External = false,
+					LINKS_Name = "/!\\ IMAGE SIZEE is set in COLOR TAB /!\\",
+				},
+				CopyrightEmpty = {
+					LINKID_DataType = "Number",
+					LBLC_DropDownButton = false,
+					ICS_ControlPage = "Color",
+					INPID_InputControl = "LabelControl",
+					INP_Passive = true,
+					INP_External = false,
+					LINKS_Name = "",
+				},
+				Author = {
+					LINKID_DataType = "Number",
+					LBLC_DropDownButton = false,
+					ICS_ControlPage = "Color",
+					INPID_InputControl = "LabelControl",
+					INP_Passive = true,
+					INP_External = false,
+					LINKS_Name = "Author: Theo Francart",
+				},
+				Copyright = {
+					LINKID_DataType = "Number",
+					LBLC_DropDownButton = false,
+					ICS_ControlPage = "Color",
+					INPID_InputControl = "LabelControl",
+					INP_Passive = true,
+					INP_External = false,
+					LINKS_Name = "@RTS - Radio Television Suisse",
+				}
+			}
+		},
 		tTransform_0 = Transform {
 			NameSet = true,
 			Inputs = {
@@ -500,9 +512,9 @@
 				OutputX = Input { Value = 960, },
 				OutputY = Input { Value = 540, }
 			},
-			ViewInfo = OperatorInfo { Pos = { -48.3005, -192.439 } },
+			ViewInfo = OperatorInfo { Pos = { 126.408, 55.8528 } },
 			UserControls = ordered() {
-				OldControlNest = { LBLC_DropDownButton = true, INPID_InputControl = "LabelControl", LBLC_NumInputs = 17, INP_External = false, ICS_ControlPage = "Controls", LBLC_NestLevel = 1, INP_Passive = true, LBLCID_HideUpToID = "Direction", LINKS_Name = "Old Control", },
+				OldControlNest = { LBLC_DropDownButton = true, INPID_InputControl = "LabelControl", LBLC_NumInputs = 17, INP_External = false, ICS_ControlPage = "Controls", LBLCID_HideUpToID = "Direction", LBLC_NestLevel = 1, INP_Passive = true, LINKS_Name = "Old Control", },
 				TransformNest = { ICS_ControlPage = "Controls", },
 				Center = { ICS_ControlPage = "Controls", },
 				Pivot = { ICS_ControlPage = "Controls", },
@@ -518,18 +530,18 @@
 				FlattenTransform = { ICS_ControlPage = "Controls", },
 				ReferenceSize = { ICS_ControlPage = "Controls", },
 				UseFrameFormatSettings = {
-					ICS_ControlPage = "Controls",
 					LINKS_Name = " ",
+					ICS_ControlPage = "Controls",
 				},
 				Width = { ICS_ControlPage = "Controls", },
 				Height = { ICS_ControlPage = "Controls", },
 				Info_Param_1 = {
-					ICS_ControlPage = "Controls",
-					LBLC_DropDownButton = false,
 					LINKID_DataType = "Number",
-					INP_External = false,
-					INP_Passive = true,
+					LBLC_DropDownButton = false,
+					ICS_ControlPage = "Controls",
 					INPID_InputControl = "LabelControl",
+					INP_Passive = true,
+					INP_External = false,
 					LINKS_Name = " ",
 				},
 				CanvasSizeReference = {
@@ -552,49 +564,49 @@
 					LBLC_DropDownButton = true,
 					INPID_InputControl = "LabelControl",
 					LBLC_NumInputs = 2,
-					IC_Visible = false,
-					LINKID_DataType = "Number",
-					ICS_ControlPage = "Controls",
-					INP_Passive = false,
-					LBLC_NestLevel = 1,
 					LINKS_Name = "CanvasSizeInputs",
+					LINKID_DataType = "Number",
+					LBLC_NestLevel = 1,
+					INP_Passive = false,
+					ICS_ControlPage = "Controls",
+					IC_Visible = false,
 				},
 				InputWidth = {
-					INP_Default = 1080,
-					INP_Integer = true,
-					ICS_ControlPage = "Controls",
-					LINKID_DataType = "Number",
-					INP_MinScale = 1,
-					INPID_InputControl = "SliderControl",
-					INP_MaxScale = 1920,
 					LINKS_Name = "Width",
+					INP_Integer = true,
+					LINKID_DataType = "Number",
+					ICS_ControlPage = "Controls",
+					INPID_InputControl = "SliderControl",
+					INP_MinScale = 1,
+					INP_MaxScale = 1920,
+					INP_Default = 1080,
 				},
 				InputHeight = {
-					INP_Default = 1080,
-					INP_Integer = true,
-					ICS_ControlPage = "Controls",
-					LINKID_DataType = "Number",
-					INP_MinScale = 1,
-					INPID_InputControl = "SliderControl",
-					INP_MaxScale = 1920,
 					LINKS_Name = "Height",
+					INP_Integer = true,
+					LINKID_DataType = "Number",
+					ICS_ControlPage = "Controls",
+					INPID_InputControl = "SliderControl",
+					INP_MinScale = 1,
+					INP_MaxScale = 1920,
+					INP_Default = 1080,
 				},
 				Empty1 = {
-					ICS_ControlPage = "Controls",
-					LBLC_DropDownButton = false,
 					LINKID_DataType = "Number",
-					INP_External = false,
-					INP_Passive = true,
+					LBLC_DropDownButton = false,
+					ICS_ControlPage = "Controls",
 					INPID_InputControl = "LabelControl",
+					INP_Passive = true,
+					INP_External = false,
 					LINKS_Name = " ",
 				},
 				Info1 = {
-					ICS_ControlPage = "Controls",
-					LBLC_DropDownButton = false,
 					LINKID_DataType = "Number",
-					INP_External = false,
-					INP_Passive = true,
+					LBLC_DropDownButton = false,
+					ICS_ControlPage = "Controls",
 					INPID_InputControl = "LabelControl",
+					INP_Passive = true,
+					INP_External = false,
 					LINKS_Name = "Move FROM ...",
 				},
 				InputReference = {
@@ -615,38 +627,38 @@
 				},
 				InputX = {
 					INP_MinScale = -2000,
-					INP_Default = 0,
+					LINKS_Name = "From X ...",
 					ICS_ControlPage = "Controls",
 					INPID_InputControl = "SliderControl",
 					LINKID_DataType = "Number",
 					INP_MaxScale = 2000,
-					LINKS_Name = "From X ...",
+					INP_Default = 0,
 				},
 				InputY = {
 					INP_MinScale = -2000,
-					INP_Default = 0,
+					LINKS_Name = "From Y ...",
 					ICS_ControlPage = "Controls",
 					INPID_InputControl = "SliderControl",
 					LINKID_DataType = "Number",
 					INP_MaxScale = 2000,
-					LINKS_Name = "From Y ...",
+					INP_Default = 0,
 				},
 				Empty2 = {
-					ICS_ControlPage = "Controls",
-					LBLC_DropDownButton = false,
 					LINKID_DataType = "Number",
-					INP_External = false,
-					INP_Passive = true,
+					LBLC_DropDownButton = false,
+					ICS_ControlPage = "Controls",
 					INPID_InputControl = "LabelControl",
+					INP_Passive = true,
+					INP_External = false,
 					LINKS_Name = "",
 				},
 				Info2 = {
-					ICS_ControlPage = "Controls",
-					LBLC_DropDownButton = false,
 					LINKID_DataType = "Number",
-					INP_External = false,
-					INP_Passive = true,
+					LBLC_DropDownButton = false,
+					ICS_ControlPage = "Controls",
 					INPID_InputControl = "LabelControl",
+					INP_Passive = true,
+					INP_External = false,
 					LINKS_Name = "... TO",
 				},
 				OutputReference = {
@@ -667,47 +679,47 @@
 				},
 				OutputX = {
 					INP_MinScale = -2000,
-					INP_Default = 0,
+					LINKS_Name = "... to X",
 					ICS_ControlPage = "Controls",
 					INPID_InputControl = "SliderControl",
 					LINKID_DataType = "Number",
 					INP_MaxScale = 2000,
-					LINKS_Name = "... to X",
+					INP_Default = 0,
 				},
 				OutputY = {
 					INP_MinScale = -2000,
-					INP_Default = 0,
+					LINKS_Name = "... to Y",
 					ICS_ControlPage = "Controls",
 					INPID_InputControl = "SliderControl",
 					LINKID_DataType = "Number",
 					INP_MaxScale = 2000,
-					LINKS_Name = "... to Y",
+					INP_Default = 0,
 				},
 				CopyrightEmpty = {
-					ICS_ControlPage = "Controls",
-					LBLC_DropDownButton = false,
 					LINKID_DataType = "Number",
-					INP_External = false,
-					INP_Passive = true,
+					LBLC_DropDownButton = false,
+					ICS_ControlPage = "Controls",
 					INPID_InputControl = "LabelControl",
+					INP_Passive = true,
+					INP_External = false,
 					LINKS_Name = "",
 				},
 				Author = {
-					ICS_ControlPage = "Controls",
-					LBLC_DropDownButton = false,
 					LINKID_DataType = "Number",
-					INP_External = false,
-					INP_Passive = true,
+					LBLC_DropDownButton = false,
+					ICS_ControlPage = "Controls",
 					INPID_InputControl = "LabelControl",
+					INP_Passive = true,
+					INP_External = false,
 					LINKS_Name = "Author: Theo Francart",
 				},
 				Copyright = {
-					ICS_ControlPage = "Controls",
-					LBLC_DropDownButton = false,
 					LINKID_DataType = "Number",
-					INP_External = false,
-					INP_Passive = true,
+					LBLC_DropDownButton = false,
+					ICS_ControlPage = "Controls",
 					INPID_InputControl = "LabelControl",
+					INP_Passive = true,
+					INP_External = false,
 					LINKS_Name = "@RTS - Radio Television Suisse",
 				}
 			}
@@ -725,27 +737,27 @@
 				},
 				PerformDepthMerge = Input { Value = 0, }
 			},
-			ViewInfo = OperatorInfo { Pos = { -174.685, -35.1812 } },
+			ViewInfo = OperatorInfo { Pos = { 0.0236969, 213.111 } },
 			UserControls = ordered() {
 				Info_Param_1 = {
-					ICS_ControlPage = "Merge",
-					LBLC_DropDownButton = false,
 					LINKID_DataType = "Number",
-					INP_External = false,
-					INP_Passive = true,
+					LBLC_DropDownButton = false,
+					ICS_ControlPage = "Merge",
 					INPID_InputControl = "LabelControl",
+					INP_Passive = true,
+					INP_External = false,
 					LINKS_Name = "Simple Merge, Green on Yellow",
 				},
 				Info_Param_2 = {
-					ICS_ControlPage = "Merge",
-					LBLC_DropDownButton = false,
 					LINKID_DataType = "Number",
-					INP_External = false,
-					INP_Passive = true,
+					LBLC_DropDownButton = false,
+					ICS_ControlPage = "Merge",
 					INPID_InputControl = "LabelControl",
+					INP_Passive = true,
+					INP_External = false,
 					LINKS_Name = " ",
 				},
-				OldControlNest = { LBLC_DropDownButton = true, INPID_InputControl = "LabelControl", LBLC_NumInputs = 22, INP_External = false, ICS_ControlPage = "Merge", LBLC_NestLevel = 1, INP_Passive = true, LBLCID_HideUpToID = "Direction", LINKS_Name = "Old Control", },
+				OldControlNest = { LBLC_DropDownButton = true, INPID_InputControl = "LabelControl", LBLC_NumInputs = 22, INP_External = false, ICS_ControlPage = "Merge", LBLCID_HideUpToID = "Direction", LBLC_NestLevel = 1, INP_Passive = true, LINKS_Name = "Old Control", },
 				Center = { ICS_ControlPage = "Merge", },
 				Size = { ICS_ControlPage = "Merge", },
 				Angle = { ICS_ControlPage = "Merge", },
@@ -770,11 +782,11 @@
 				Merge = { ICS_ControlPage = "Merge", }
 			}
 		},
-		tTransform_1 = Transform {
+		tTransform_2 = Transform {
 			NameSet = true,
 			Inputs = {
 				Input = Input {
-					SourceOp = "tCheckBG_Merge_1",
+					SourceOp = "tCheckBG_Merge_2",
 					Source = "Output",
 				},
 				Center = Input { Expression = "Point(0.5, 0.5) - Point( iif(InputReference==0,(InputX),(InputX/Width)), iif(InputReference==0,(InputY),(1-InputY/Height)) ) + Point( iif(OutputReference==0,(OutputX),(OutputX/Width) ), iif(OutputReference==0,(OutputY),(1-OutputY/Height)) )", },
@@ -784,13 +796,11 @@
 				CanvasSizeInputs = Input { Expression = "iif(CanvasSizeReference == 1,1,0)", },
 				InputReference = Input { Value = 0, },
 				InputX = Input { Value = 0.5, },
-				InputY = Input { Value = 0.5, },
-				OutputX = Input { Value = 540, },
-				OutputY = Input { Value = 960, }
+				InputY = Input { Value = 0.5, }
 			},
-			ViewInfo = OperatorInfo { Pos = { -50.9605, -114.863 } },
+			ViewInfo = OperatorInfo { Pos = { 119.357, 213.111 } },
 			UserControls = ordered() {
-				OldControlNest = { LBLC_DropDownButton = true, INPID_InputControl = "LabelControl", LBLC_NumInputs = 17, INP_External = false, ICS_ControlPage = "Controls", LBLC_NestLevel = 1, INP_Passive = true, LBLCID_HideUpToID = "Direction", LINKS_Name = "Old Control", },
+				OldControlNest = { LBLC_DropDownButton = true, INPID_InputControl = "LabelControl", LBLC_NumInputs = 17, INP_External = false, ICS_ControlPage = "Controls", INP_Passive = true, LBLC_NestLevel = 1, LBLCID_HideUpToID = "Direction", LINKS_Name = "Old Control", },
 				TransformNest = { ICS_ControlPage = "Controls", },
 				Center = { ICS_ControlPage = "Controls", },
 				Pivot = { ICS_ControlPage = "Controls", },
@@ -843,8 +853,8 @@
 					IC_Visible = false,
 					LINKID_DataType = "Number",
 					ICS_ControlPage = "Controls",
-					INP_Passive = false,
 					LBLC_NestLevel = 1,
+					INP_Passive = false,
 					LINKS_Name = "CanvasSizeInputs",
 				},
 				InputWidth = {
@@ -1000,129 +1010,59 @@
 				}
 			}
 		},
-		tCheckBG_2 = Background {
-			NameSet = true,
-			Inputs = {
-				GlobalOut = Input { Value = 199, },
-				["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
-				TopLeftAlpha = Input { Value = 0, },
-				Width = Input { Value = 1080, },
-				Height = Input { Value = 1080, }
-			},
-			ViewInfo = OperatorInfo { Pos = { -174.685, 2.34779 } },
-			UserControls = ordered() {
-				title = {
-					ICS_ControlPage = "Color",
-					LBLC_DropDownButton = false,
-					LINKID_DataType = "Number",
-					INP_External = false,
-					INP_Passive = true,
-					INPID_InputControl = "LabelControl",
-					LINKS_Name = "Output Size",
-				},
-				UseFrameFormatSettings = {
-					ICS_ControlPage = "Color",
-				},
-				Width = {
-					ICS_ControlPage = "Color",
-				},
-				Height = {
-					ICS_ControlPage = "Color",
-				},
-				InfoTitle = {
-					ICS_ControlPage = "Image",
-					LBLC_DropDownButton = false,
-					LINKID_DataType = "Number",
-					INP_External = false,
-					INP_Passive = true,
-					INPID_InputControl = "LabelControl",
-					LINKS_Name = "/!\\ IMAGE SIZEE is set in COLOR TAB /!\\",
-				},
-				CopyrightEmpty = {
-					ICS_ControlPage = "Color",
-					LBLC_DropDownButton = false,
-					LINKID_DataType = "Number",
-					INP_External = false,
-					INP_Passive = true,
-					INPID_InputControl = "LabelControl",
-					LINKS_Name = "",
-				},
-				Author = {
-					ICS_ControlPage = "Color",
-					LBLC_DropDownButton = false,
-					LINKID_DataType = "Number",
-					INP_External = false,
-					INP_Passive = true,
-					INPID_InputControl = "LabelControl",
-					LINKS_Name = "Author: Theo Francart",
-				},
-				Copyright = {
-					ICS_ControlPage = "Color",
-					LBLC_DropDownButton = false,
-					LINKID_DataType = "Number",
-					INP_External = false,
-					INP_Passive = true,
-					INPID_InputControl = "LabelControl",
-					LINKS_Name = "@RTS - Radio Television Suisse",
-				}
-			}
-		},
 		tCheckFormat = Switch {
+			CtrlWZoom = false,
 			NameSet = true,
 			Inputs = {
-				NumberOfInputs = Input { Value = 7, },
-				Source = Input {
-					Value = 1,
-					Expression = "iif(w==1920 and h==1080,1, iif(w==3840 and h==2160,2, iif(w==1080 and h==1440,3, iif(w==1080 and h==1920,4, iif(w==1080 and h==1080,5, iif(w==1440 and h==1080,6, 0))))))",
-				},
+				NumberOfInputs = Input { Value = 8, },
+				Source = Input { Expression = ": --[[ Automatic ]] ; return iif(w==1080 and h==1920,1, iif(w==1080 and h==1440,2, iif(w==1080 and h==1350,3, iif(w==1080 and h==1080,4, iif(w==1440 and h==1080,5, iif(w==1920 and h==1080,6, iif(w==3840 and h==2160,7, 0)))))))", },
 				StartRenderScripts = Input { Value = 1, },
-				w = Input {
-					Value = 1920,
-					Expression = "comp:GetPrefs(\"Comp.FrameFormat.Width\")",
-				},
-				h = Input {
-					Value = 1080,
-					Expression = "comp:GetPrefs(\"Comp.FrameFormat.Height\")",
-				},
+				w = Input { Expression = ": --[[ Automatic ]] ; return tCheckFormatText.Width", },
+				h = Input { Expression = ": --[[ Automatic ]] ; return tCheckFormatText.Height", },
 				Name0 = Input { Value = "Unknown", },
 				Input0 = Input {
 					SourceOp = "tCheckFormatText",
 					Source = "Output",
 				},
-				Name1 = Input { Value = "1080p", },
+				Name1 = Input { Value = "1080 x 1920", },
 				Input1 = Input {
-					SourceOp = "tTransform_0",
+					SourceOp = "tTransform_1",
 					Source = "Output",
 				},
-				Name2 = Input { Value = "4K", },
+				Name2 = Input { Value = "1080 x 1440", },
 				Input2 = Input {
 					SourceOp = "tCheckFormatText",
 					Source = "Output",
 				},
-				Name3 = Input { Value = "4-5", },
+				Name3 = Input { Value = "1080 x 1350", },
 				Input3 = Input {
 					SourceOp = "tCheckFormatText",
 					Source = "Output",
 				},
-				Name4 = Input { Value = "9-16", },
+				Name4 = Input { Value = "1080 x 1080", },
 				Input4 = Input {
-					SourceOp = "tTransform_1",
+					SourceOp = "tCheckFormatText",
 					Source = "Output",
 				},
-				Name5 = Input { Value = "1-1", },
+				Name5 = Input { Value = "1440 x 1080", },
 				Input5 = Input {
 					SourceOp = "tCheckFormatText",
 					Source = "Output",
 				},
-				Name6 = Input { Value = "4-3", },
+				Name6 = Input { Value = "1920 x 1080", },
 				Input6 = Input {
+					SourceOp = "tTransform_0",
+					Source = "Output",
+				},
+				Name7 = Input { Value = "3840 x 2160", },
+				Input7 = Input {
 					SourceOp = "tCheckFormatText",
 					Source = "Output",
 				}
 			},
-			ViewInfo = OperatorInfo { Pos = { 76.9128, -192.439 } },
-			Colors = { TileColor = { R = 0.474509803921569, G = 0.658823529411765, B = 0.815686274509804 }, },
-			UserControls = ordered() { w = { INP_MaxAllowed = 1000000, INP_Integer = false, INPID_InputControl = "SliderControl", INP_MaxScale = 1, INP_MinScale = 0, INP_MinAllowed = -1000000, LINKID_DataType = "Number", ICS_ControlPage = "Controls", INP_SplineType = "Default", LINKS_Name = "Width (w)" }, h = { INP_MaxAllowed = 1000000, INP_Integer = false, INPID_InputControl = "SliderControl", INP_MaxScale = 1, INP_MinScale = 0, INP_MinAllowed = -1000000, LINKID_DataType = "Number", ICS_ControlPage = "Controls", INP_SplineType = "Default", LINKS_Name = "Height (h)" } }
+			ViewInfo = OperatorInfo { Pos = { 256.756, 55.8528 } },
+			Colors = { TileColor = { R = 0.776470588235294, G = 0.627450980392157, B = 0.466666666666667 }, },
+			UserControls = ordered() { w = { INP_MaxAllowed = 1000000, INP_Integer = true, INPID_InputControl = "SliderControl", INP_MaxScale = 1, INP_MinScale = 0, INP_MinAllowed = -1000000, LINKID_DataType = "Number", ICS_ControlPage = "Controls", INP_SplineType = "Default", LINKS_Name = "Width (w)" }, h = { INP_MaxAllowed = 1000000, INP_Integer = true, INPID_InputControl = "SliderControl", INP_MaxScale = 1, INP_MinScale = 0, INP_MinAllowed = -1000000, LINKID_DataType = "Number", ICS_ControlPage = "Controls", INP_SplineType = "Default", LINKS_Name = "Height (h)" } }
 		},
 		tCheckFormatText = TextPlus {
 			NameSet = true,
@@ -1141,10 +1081,7 @@
 				Select = Input { Value = 3, },
 				Enabled5 = Input { Value = 1, },
 				Softness1 = Input { Value = 1, },
-				StyledText = Input {
-					Value = "Unsupported format",
-					Expression = "Text(\"unsupported format\\n\" .. tCheckFormat.w .. \" x \".. tCheckFormat.h)",
-				},
+				StyledText = Input { Expression = "Text(\"This template does not support the current format: \\n\" .. tCheckFormat.w .. \" x \".. tCheckFormat.h)", },
 				Font = Input { Value = "Open Sans", },
 				Style = Input { Value = "Bold", },
 				Size = Input { Value = 0.05, },
@@ -1157,7 +1094,74 @@
 				Blue5 = Input { Value = 0, },
 				Softness5 = Input { Value = 1, }
 			},
-			ViewInfo = OperatorInfo { Pos = { 76.9128, -141.871 } },
+			ViewInfo = OperatorInfo { Pos = { 256.756, 106.421 } },
+		},
+		tCheckBG_2 = Background {
+			NameSet = true,
+			Inputs = {
+				GlobalOut = Input { Value = 199, },
+				["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
+				TopLeftAlpha = Input { Value = 0, },
+				Width = Input { Value = 1080, },
+				Height = Input { Value = 1080, }
+			},
+			ViewInfo = OperatorInfo { Pos = { 0.0236969, 250.64 } },
+			UserControls = ordered() {
+				title = {
+					LINKID_DataType = "Number",
+					LBLC_DropDownButton = false,
+					ICS_ControlPage = "Color",
+					INPID_InputControl = "LabelControl",
+					INP_Passive = true,
+					INP_External = false,
+					LINKS_Name = "Output Size",
+				},
+				UseFrameFormatSettings = {
+					ICS_ControlPage = "Color",
+				},
+				Width = {
+					ICS_ControlPage = "Color",
+				},
+				Height = {
+					ICS_ControlPage = "Color",
+				},
+				InfoTitle = {
+					LINKID_DataType = "Number",
+					LBLC_DropDownButton = false,
+					ICS_ControlPage = "Image",
+					INPID_InputControl = "LabelControl",
+					INP_Passive = true,
+					INP_External = false,
+					LINKS_Name = "/!\\ IMAGE SIZEE is set in COLOR TAB /!\\",
+				},
+				CopyrightEmpty = {
+					LINKID_DataType = "Number",
+					LBLC_DropDownButton = false,
+					ICS_ControlPage = "Color",
+					INPID_InputControl = "LabelControl",
+					INP_Passive = true,
+					INP_External = false,
+					LINKS_Name = "",
+				},
+				Author = {
+					LINKID_DataType = "Number",
+					LBLC_DropDownButton = false,
+					ICS_ControlPage = "Color",
+					INPID_InputControl = "LabelControl",
+					INP_Passive = true,
+					INP_External = false,
+					LINKS_Name = "Author: Theo Francart",
+				},
+				Copyright = {
+					LINKID_DataType = "Number",
+					LBLC_DropDownButton = false,
+					ICS_ControlPage = "Color",
+					INPID_InputControl = "LabelControl",
+					INP_Passive = true,
+					INP_External = false,
+					LINKS_Name = "@RTS - Radio Television Suisse",
+				}
+			}
 		}
 	}
 }

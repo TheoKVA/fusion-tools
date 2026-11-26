@@ -7,8 +7,8 @@
 				NumberOfInputs = Input { Value = 8, },
 				Source = Input { Expression = ": --[[ Automatic ]] ; return iif(w==1080 and h==1920,1, iif(w==1080 and h==1440,2, iif(w==1080 and h==1350,3, iif(w==1080 and h==1080,4, iif(w==1440 and h==1080,5, iif(w==1920 and h==1080,6, iif(w==3840 and h==2160,7, 0)))))))", },
 				StartRenderScripts = Input { Value = 1, },
-				w = Input { Expression = ": --[[ Automatic ]] ; return comp:GetPrefs(\"Comp.FrameFormat.Width\")", },
-				h = Input { Expression = ": --[[ Automatic ]] ; return comp:GetPrefs(\"Comp.FrameFormat.Height\")", },
+				w = Input { Expression = ": --[[ Automatic ]] ; return tCheckFormatText.Width", },
+				h = Input { Expression = ": --[[ Automatic ]] ; return tCheckFormatText.Height", },
 				Name0 = Input { Value = "Unknown", },
 				Name1 = Input { Value = "1080 x 1920", },
 				Name2 = Input { Value = "1080 x 1440", },
@@ -52,7 +52,7 @@
 			},
 			ViewInfo = OperatorInfo { Pos = { 648.29, 216.805 } },
 			Colors = { TileColor = { R = 0.474509803921569, G = 0.658823529411765, B = 0.815686274509804 }, },
-			UserControls = ordered() { w = { INP_MaxAllowed = 1000000, INP_Integer = false, INPID_InputControl = "SliderControl", INP_MaxScale = 1, INP_MinScale = 0, INP_MinAllowed = -1000000, LINKID_DataType = "Number", ICS_ControlPage = "Controls", INP_SplineType = "Default", LINKS_Name = "Width (w)" }, h = { INP_MaxAllowed = 1000000, INP_Integer = false, INPID_InputControl = "SliderControl", INP_MaxScale = 1, INP_MinScale = 0, INP_MinAllowed = -1000000, LINKID_DataType = "Number", ICS_ControlPage = "Controls", INP_SplineType = "Default", LINKS_Name = "Height (h)" } }
+			UserControls = ordered() { w = { INP_MaxAllowed = 1000000, INP_Integer = true, INPID_InputControl = "SliderControl", INP_MaxScale = 1, INP_MinScale = 0, INP_MinAllowed = -1000000, LINKID_DataType = "Number", ICS_ControlPage = "Controls", INP_SplineType = "Default", LINKS_Name = "Width (w)" }, h = { INP_MaxAllowed = 1000000, INP_Integer = true, INPID_InputControl = "SliderControl", INP_MaxScale = 1, INP_MinScale = 0, INP_MinAllowed = -1000000, LINKID_DataType = "Number", ICS_ControlPage = "Controls", INP_SplineType = "Default", LINKS_Name = "Height (h)" } }
 		},
 		tCheckFormatText = TextPlus {
 			NameSet = true,
