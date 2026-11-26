@@ -1,41 +1,126 @@
 {
 	Tools = ordered() {
-		tCheckBackground = Background {
+		tCheckBG_Merge = Merge {
+			CtrlWZoom = false,
 			NameSet = true,
 			Inputs = {
-				GlobalOut = Input { Value = 249, },
-				Width = Input {
-					Value = 1920,
-					Expression = "iif(CanvasSizeReference == 1, CanvasWidth, CompWidth)",
-				},
-				Height = Input {
-					Value = 1080,
-					Expression = "iif(CanvasSizeReference == 1, CanvasHeight, CompHeight)",
-				},
-				UseFrameFormatSettings = Input { Expression = "iif(CanvasSizeReference == 1,0,1)", },
-				["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
-				TopLeftAlpha = Input { Value = 0, },
-				CanvasSizeReference = Input { Value = 1, },
-				CanvasSizeInputs = Input {
-					Value = 1,
-					Expression = "iif(CanvasSizeReference == 1,1,0)",
-				},
-				CompWidth = Input { Expression = "comp:GetPrefs(\"Comp.FrameFormat.Width\")", },
-				CompHeight = Input { Expression = "comp:GetPrefs(\"Comp.FrameFormat.Height\")", }
-			},
-			ViewInfo = OperatorInfo { Pos = { 695.06, 608.093 } },
-			UserControls = ordered() { CanvasSizeReference = { { MBTNC_AddButton = "Default" }, { MBTNC_AddButton = "Custom" }, INP_Integer = true, INPID_InputControl = "MultiButtonControl", MBTNC_ShowBasicButton = true, INP_SplineType = "Default", INP_Default = 0, ICS_ControlPage = "Color", INP_External = false, LINKID_DataType = "Number", MBTNC_ShowName = false, MBTNC_StretchToFit = false, MBTNC_ShowToolTip = false, LINKS_Name = "Output Size", }, CanvasSizeInputs = { LBLC_DropDownButton = true, INPID_InputControl = "LabelControl", LBLC_NumInputs = 2, IC_Visible = false, LINKID_DataType = "Number", ICS_ControlPage = "Color", LBLC_NestLevel = 1, INP_Passive = false, LINKS_Name = "CanvasSizeInputs", }, CanvasWidth = { INP_MaxAllowed = 32767, INP_Integer = true, INPID_InputControl = "SliderControl", INP_MaxScale = 4096, INP_Default = 1920, INP_MinScale = 1, INP_MinAllowed = 1, LINKID_DataType = "Number", ICS_ControlPage = "Color", INP_External = false, LINKS_Name = "Width" }, CanvasHeight = { INP_MaxAllowed = 32767, INP_Integer = true, INPID_InputControl = "SliderControl", INP_MaxScale = 4096, INP_Default = 1080, INP_MinScale = 1, INP_MinAllowed = 1, LINKID_DataType = "Number", ICS_ControlPage = "Color", INP_External = false, LINKS_Name = "Height" }, CompWidth = { INPID_InputControl = "SliderControl", INP_MaxScale = 2000, INP_Default = 1920, INP_MinScale = 0, INP_External = false, LINKID_DataType = "Number", IC_Visible = false, ICS_ControlPage = "Color", LINKS_Name = "width (CompWidth)", }, CompHeight = { INPID_InputControl = "SliderControl", INP_MaxScale = 2000, INP_Default = 1080, INP_MinScale = 0, INP_External = false, LINKID_DataType = "Number", IC_Visible = false, ICS_ControlPage = "Color", LINKS_Name = "height (CompHeight)", }, CopyrightEmpty = { ICS_ControlPage = "Color", LBLC_DropDownButton = false, LINKID_DataType = "Number", INP_External = false, INP_Passive = true, INPID_InputControl = "LabelControl", LINKS_Name = "", }, Author = { ICS_ControlPage = "Color", LBLC_DropDownButton = false, LINKID_DataType = "Number", INP_External = false, INP_Passive = true, INPID_InputControl = "LabelControl", LINKS_Name = "Author: Theo Francart", }, Copyright = { ICS_ControlPage = "Color", LBLC_DropDownButton = false, LINKID_DataType = "Number", INP_External = false, INP_Passive = true, INPID_InputControl = "LabelControl", LINKS_Name = "@RTS - Radio Television Suisse", } }
-		},
-		tCheckBackground_Merge = Merge {
-			CtrlWZoom = false,
-			Inputs = {
 				Background = Input {
-					SourceOp = "tCheckBackground",
+					SourceOp = "tCheckBG",
 					Source = "Output",
 				},
 				PerformDepthMerge = Input { Value = 0, }
 			},
-			ViewInfo = OperatorInfo { Pos = { 695.06, 560.096 } },
+			ViewInfo = OperatorInfo { Pos = { 1310.11, 313.843 } },
+			UserControls = ordered() {
+				Info_Param_1 = {
+					ICS_ControlPage = "Merge",
+					LBLC_DropDownButton = false,
+					LINKID_DataType = "Number",
+					INP_External = false,
+					INP_Passive = true,
+					INPID_InputControl = "LabelControl",
+					LINKS_Name = "Simple Merge, Green on Yellow",
+				},
+				Info_Param_2 = {
+					ICS_ControlPage = "Merge",
+					LBLC_DropDownButton = false,
+					LINKID_DataType = "Number",
+					INP_External = false,
+					INP_Passive = true,
+					INPID_InputControl = "LabelControl",
+					LINKS_Name = " ",
+				},
+				OldControlNest = { LBLC_DropDownButton = true, INPID_InputControl = "LabelControl", LBLC_NumInputs = 22, INP_External = false, INP_Passive = true, ICS_ControlPage = "Merge", LBLC_NestLevel = 1, LBLCID_HideUpToID = "Direction", LINKS_Name = "Old Control", },
+				Center = { ICS_ControlPage = "Merge", },
+				Size = { ICS_ControlPage = "Merge", },
+				Angle = { ICS_ControlPage = "Merge", },
+				FlipHoriz = { ICS_ControlPage = "Merge", },
+				FlipVert = { ICS_ControlPage = "Merge", },
+				ApplyMode = { ICS_ControlPage = "Merge", },
+				Operator = { ICS_ControlPage = "Merge", },
+				SubtractiveAdditive = { ICS_ControlPage = "Merge", },
+				Gain = { ICS_ControlPage = "Merge", },
+				BurnIn = { ICS_ControlPage = "Merge", },
+				BlendClone = { ICS_ControlPage = "Merge", },
+				ClampCoverage = { ICS_ControlPage = "Merge", },
+				Edges = { ICS_ControlPage = "Merge", },
+				FilterMethod = { ICS_ControlPage = "Merge", },
+				InvertTransform = { ICS_ControlPage = "Merge", },
+				FlattenTransform = { ICS_ControlPage = "Merge", },
+				Width = { ICS_ControlPage = "Merge", },
+				Height = { ICS_ControlPage = "Merge", },
+				UseFrameFormatSettings = { ICS_ControlPage = "Merge", },
+				CommentsNest = { ICS_ControlPage = "Merge", },
+				ReferenceSize = { ICS_ControlPage = "Merge", },
+				Merge = { ICS_ControlPage = "Merge", }
+			}
+		},
+		tCheckBG = Background {
+			NameSet = true,
+			Inputs = {
+				GlobalOut = Input { Value = 399, },
+				["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
+				TopLeftAlpha = Input { Value = 0, },
+				Width = Input { Value = 1920, },
+				Height = Input { Value = 1080, }
+			},
+			ViewInfo = OperatorInfo { Pos = { 1310.11, 351.372 } },
+			UserControls = ordered() {
+				title = {
+					ICS_ControlPage = "Color",
+					LBLC_DropDownButton = false,
+					LINKID_DataType = "Number",
+					INP_External = false,
+					INP_Passive = true,
+					INPID_InputControl = "LabelControl",
+					LINKS_Name = "Output Size",
+				},
+				UseFrameFormatSettings = {
+					ICS_ControlPage = "Color",
+				},
+				Width = {
+					ICS_ControlPage = "Color",
+				},
+				Height = {
+					ICS_ControlPage = "Color",
+				},
+				InfoTitle = {
+					ICS_ControlPage = "Image",
+					LBLC_DropDownButton = false,
+					LINKID_DataType = "Number",
+					INP_External = false,
+					INP_Passive = true,
+					INPID_InputControl = "LabelControl",
+					LINKS_Name = "/!\\ IMAGE SIZEE is set in COLOR TAB /!\\",
+				},
+				CopyrightEmpty = {
+					ICS_ControlPage = "Color",
+					LBLC_DropDownButton = false,
+					LINKID_DataType = "Number",
+					INP_External = false,
+					INP_Passive = true,
+					INPID_InputControl = "LabelControl",
+					LINKS_Name = "",
+				},
+				Author = {
+					ICS_ControlPage = "Color",
+					LBLC_DropDownButton = false,
+					LINKID_DataType = "Number",
+					INP_External = false,
+					INP_Passive = true,
+					INPID_InputControl = "LabelControl",
+					LINKS_Name = "Author: Theo Francart",
+				},
+				Copyright = {
+					ICS_ControlPage = "Color",
+					LBLC_DropDownButton = false,
+					LINKID_DataType = "Number",
+					INP_External = false,
+					INP_Passive = true,
+					INPID_InputControl = "LabelControl",
+					LINKS_Name = "@RTS - Radio Television Suisse",
+				}
+			}
 		}
 	}
 }

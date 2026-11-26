@@ -1,6 +1,6 @@
 {
 	Tools = ordered() {
-		PipeRouter1_1 = PipeRouter {
+		PipeRouter = PipeRouter {
 			ViewInfo = PipeRouterInfo { Pos = { -336.184, 44.7105 } },
 		},
 		tTimeSpeed = TimeSpeed {
@@ -8,7 +8,7 @@
 			Inputs = {
 				SampleSpread = Input { Disabled = true, },
 				Input = Input {
-					SourceOp = "PipeRouter1_1",
+					SourceOp = "PipeRouter",
 					Source = "Output",
 				},
 				FreezeFrame = Input { Expression = "0.0", },
@@ -22,7 +22,7 @@
 			Colors = { TileColor = { R = 0.474509803921569, G = 0.658823529411765, B = 0.815686274509804 }, },
 			UserControls = ordered() { OldControlNest = { LBLC_DropDownButton = true, INPID_InputControl = "LabelControl", LBLC_NumInputs = 4, INP_External = false, ICS_ControlPage = "Controls", LBLCID_HideUpToID = "Direction", LBLC_NestLevel = 1, INP_Passive = true, LINKS_Name = "Old Control", }, FreezeFrame = { ICS_ControlPage = "Controls", }, InterpolateBetweenFrames = { ICS_ControlPage = "Controls", }, Delay = { ICS_ControlPage = "Controls", }, Speed = { ICS_ControlPage = "Controls", }, tempty = { LINKID_DataType = "Number", LBLC_DropDownButton = false, ICS_ControlPage = "Controls", INPID_InputControl = "LabelControl", INP_Passive = true, INP_External = false, LINKS_Name = "", }, ButtonInput = { { MBTNC_AddButton = "25 to 50 fps" }, { MBTNC_AddButton = "50 to 25 fps" }, INP_MaxAllowed = 1000000, INP_Integer = true, INPID_InputControl = "MultiButtonControl", ICS_ControlPage = "Controls", INP_SplineType = "Default", MBTNC_ShowBasicButton = true, INP_MaxScale = 100, INP_Default = 1, INP_MinAllowed = -1000000, INP_MinScale = 0, INP_External = false, LINKID_DataType = "Number", MBTNC_ShowName = false, MBTNC_StretchToFit = false, MBTNC_ShowToolTip = false, LINKS_Name = "Framerate" } }
 		},
-		tKeyframeStretcher = KeyStretcher {
+		tKeyframeStretcher_25 = KeyStretcher {
 			Inputs = {
 				Keyframes = Input {
 					SourceOp = "tTimeSpeed",
@@ -41,10 +41,10 @@
 			Colors = { TileColor = { R = 0.474509803921569, G = 0.658823529411765, B = 0.815686274509804 }, },
 			UserControls = ordered() { OldControlNest = { LBLC_DropDownButton = true, INPID_InputControl = "LabelControl", LBLC_NumInputs = 4, INP_External = false, ICS_ControlPage = "Keyframes", LBLCID_HideUpToID = "Direction", LBLC_NestLevel = 1, INP_Passive = true, LINKS_Name = "Old Control", }, Invert = { ICS_ControlPage = "Keyframes", }, StretchEdges = { ICS_ControlPage = "Keyframes", }, SourceEnd = { ICS_ControlPage = "Keyframes", }, SourceStart = { ICS_ControlPage = "Keyframes", }, Info_Param_1 = { LINKID_DataType = "Number", LBLC_DropDownButton = false, ICS_ControlPage = "Keyframes", INPID_InputControl = "LabelControl", INP_Passive = true, INP_External = false, LINKS_Name = " ", }, LastFrame = { LINKS_Name = "Last Frame", INP_Integer = true, LINKID_DataType = "Number", ICS_ControlPage = "Keyframes", INPID_InputControl = "SliderControl", INP_MinScale = 0, INP_MaxScale = 200, INP_Default = 200, }, StretchStart = { INP_Integer = true, ICS_ControlPage = "Keyframes", }, StretchEnd = { INP_Integer = true, ICS_ControlPage = "Keyframes", }, Info_Param_2 = { LINKID_DataType = "Number", LBLC_DropDownButton = false, ICS_ControlPage = "Keyframes", INPID_InputControl = "LabelControl", INP_Passive = true, INP_External = false, LINKS_Name = " ", }, AnimIN = { { MBTNC_AddButton = "AVEC" }, { MBTNC_AddButton = "SANS" }, INP_Integer = true, INPID_InputControl = "MultiButtonControl", MBTNC_ShowBasicButton = true, INP_SplineType = "Default", INP_Default = 0, ICS_ControlPage = "Keyframes", INP_External = false, LINKID_DataType = "Number", MBTNC_ShowName = false, MBTNC_StretchToFit = false, MBTNC_ShowToolTip = false, LINKS_Name = "With AnimIN ?", }, AnimOUT = { { MBTNC_AddButton = "AVEC" }, { MBTNC_AddButton = "SANS" }, INP_Integer = true, INPID_InputControl = "MultiButtonControl", MBTNC_ShowBasicButton = true, INP_SplineType = "Default", INP_Default = 0, ICS_ControlPage = "Keyframes", INP_External = false, LINKID_DataType = "Number", MBTNC_ShowName = false, MBTNC_StretchToFit = false, MBTNC_ShowToolTip = false, LINKS_Name = "With AnimOUT ?", } }
 		},
-		tKeyframeStretcher_1 = KeyStretcher {
+		tKeyframeStretcher_50 = KeyStretcher {
 			Inputs = {
 				Keyframes = Input {
-					SourceOp = "PipeRouter1_1",
+					SourceOp = "PipeRouter",
 					Source = "Output",
 				},
 				SourceEnd = Input {
@@ -96,7 +96,7 @@
 			},
 			ViewInfo = OperatorInfo { Pos = { -5.00415, 116.573 } },
 		},
-		tCheckDuration_1 = Switch {
+		tCheckDuration_50 = Switch {
 			NameSet = true,
 			Inputs = {
 				NumberOfInputs = Input { Value = 4, },
@@ -107,7 +107,7 @@
 				MinLength = Input { Value = 150, },
 				Name0 = Input { Value = "OK", },
 				Input0 = Input {
-					SourceOp = "tKeyframeStretcher_1",
+					SourceOp = "tKeyframeStretcher_50",
 					Source = "Result",
 				},
 				Name1 = Input { Value = "STARTING NOT 0", },
@@ -130,7 +130,7 @@
 			Colors = { TileColor = { R = 0.372549019607843, G = 0.6, B = 0.125490196078431 }, },
 			UserControls = ordered() { RenderStart = { INP_MaxAllowed = 1000000, INP_Integer = false, INPID_InputControl = "SliderControl", INP_MaxScale = 1, INP_MinScale = 0, INP_MinAllowed = -1000000, LINKID_DataType = "Number", ICS_ControlPage = "Controls", INP_SplineType = "Default", LINKS_Name = "RenderStart" }, RenderEnd = { INP_MaxAllowed = 1000000, INP_Integer = false, INPID_InputControl = "SliderControl", INP_MaxScale = 1, INP_MinScale = 0, INP_MinAllowed = -1000000, LINKID_DataType = "Number", ICS_ControlPage = "Controls", INP_SplineType = "Default", LINKS_Name = "RenderEnd" }, InputText_0 = { LINKID_DataType = "Number", LBLC_DropDownButton = false, ICS_ControlPage = "Controls", INPID_InputControl = "LabelControl", INP_Passive = true, INP_External = false, LINKS_Name = " ", }, InputText_1 = { LINKID_DataType = "Number", LBLC_DropDownButton = false, ICS_ControlPage = "Controls", INPID_InputControl = "LabelControl", INP_Passive = true, INP_External = false, LINKS_Name = "INPUTS", }, MinLength = { INP_MaxAllowed = 1000000, INP_Integer = true, INPID_InputControl = "SliderControl", INP_MaxScale = 500, INP_MinScale = 0, INP_MinAllowed = -1000000, LINKID_DataType = "Number", ICS_ControlPage = "Controls", INP_SplineType = "Default", LINKS_Name = "MIN LENGTH ? (in frames)" }, TargettedLength = { INP_MaxAllowed = 1000000, INP_Integer = true, INPID_InputControl = "SliderControl", INP_MaxScale = 500, INP_MinScale = 0, INP_MinAllowed = -1000000, LINKID_DataType = "Number", ICS_ControlPage = "Controls", INP_SplineType = "Default", LINKS_Name = "TARGET LENGTH ? (in frames)" } }
 		},
-		tCheckDuration = Switch {
+		tCheckDuration_25 = Switch {
 			NameSet = true,
 			Inputs = {
 				NumberOfInputs = Input { Value = 4, },
@@ -144,7 +144,7 @@
 				MinLength = Input { Value = 75, },
 				Name0 = Input { Value = "OK", },
 				Input0 = Input {
-					SourceOp = "tKeyframeStretcher",
+					SourceOp = "tKeyframeStretcher_25",
 					Source = "Result",
 				},
 				Name1 = Input { Value = "STARTING NOT 0", },
@@ -219,12 +219,12 @@
 				},
 				Name1 = Input { Value = "25fps", },
 				Input1 = Input {
-					SourceOp = "tCheckDuration",
+					SourceOp = "tCheckDuration_25",
 					Source = "Output",
 				},
 				Name2 = Input { Value = "50fps", },
 				Input2 = Input {
-					SourceOp = "tCheckDuration_1",
+					SourceOp = "tCheckDuration_50",
 					Source = "Output",
 				}
 			},
@@ -300,100 +300,5 @@
 			},
 			ViewInfo = OperatorInfo { Pos = { -5.00415, 185.663 } },
 		},
-		tCheckFormatText = TextPlus {
-			NameSet = true,
-			Inputs = {
-				GlobalOut = Input { Value = 199, },
-				Width = Input { Value = 1920, },
-				Height = Input { Value = 1080, },
-				UseFrameFormatSettings = Input { Value = 1, },
-				["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
-				LayoutType = Input { Value = 1, },
-				Wrap = Input { Value = 1, },
-				LayoutRotation = Input { Value = 1, },
-				Red = Input { Value = 0.2, },
-				TransformRotation = Input { Value = 1, },
-				SelectElement = Input { Value = 3, },
-				Select = Input { Value = 3, },
-				Enabled5 = Input { Value = 1, },
-				Softness1 = Input { Value = 1, },
-				StyledText = Input { Expression = "Text(\"This template does not support the current format: \\n\" .. tCheckFormat_1.w .. \" x \".. tCheckFormat_1.h)", },
-				Font = Input { Value = "Open Sans", },
-				Style = Input { Value = "Bold", },
-				Size = Input { Value = 0.05, },
-				VerticalJustificationNew = Input { Value = 3, },
-				HorizontalJustificationNew = Input { Value = 3, },
-				ElementShape5 = Input { Value = 2, },
-				Level5 = Input { Value = 1, },
-				Round5 = Input { Value = 0.101, },
-				Green5 = Input { Value = 0, },
-				Blue5 = Input { Value = 0, },
-				Softness5 = Input { Value = 1, }
-			},
-			ViewInfo = OperatorInfo { Pos = { 248.336, 81.3391 } },
-		},
-		tCheckFormat_1 = Switch {
-			CtrlWZoom = false,
-			NameSet = true,
-			Inputs = {
-				NumberOfInputs = Input { Value = 8, },
-				Source = Input {
-					Value = 6,
-					Expression = ": --[[ Automatic ]] ; return iif(w==1080 and h==1920,1, iif(w==1080 and h==1440,2, iif(w==1080 and h==1350,3, iif(w==1080 and h==1080,4, iif(w==1440 and h==1080,5, iif(w==1920 and h==1080,6, iif(w==3840 and h==2160,7, 0)))))))",
-				},
-				StartRenderScripts = Input { Value = 1, },
-				w = Input {
-					Value = 1920,
-					Expression = ": --[[ Automatic ]] ; return comp:GetPrefs(\"Comp.FrameFormat.Width\")",
-				},
-				h = Input {
-					Value = 1080,
-					Expression = ": --[[ Automatic ]] ; return comp:GetPrefs(\"Comp.FrameFormat.Height\")",
-				},
-				Name0 = Input { Value = "Unknown", },
-				Input0 = Input {
-					SourceOp = "tCheckFormatText",
-					Source = "Output",
-				},
-				Name1 = Input { Value = "1080 x 1920", },
-				Input1 = Input {
-					SourceOp = "tCheckFormatText",
-					Source = "Output",
-				},
-				Name2 = Input { Value = "1080 x 1440", },
-				Input2 = Input {
-					SourceOp = "tCheckFormatText",
-					Source = "Output",
-				},
-				Name3 = Input { Value = "1080 x 1350", },
-				Input3 = Input {
-					SourceOp = "tCheckFormatText",
-					Source = "Output",
-				},
-				Name4 = Input { Value = "1080 x 1080", },
-				Input4 = Input {
-					SourceOp = "tCheckFormatText",
-					Source = "Output",
-				},
-				Name5 = Input { Value = "1440 x 1080", },
-				Input5 = Input {
-					SourceOp = "tCheckFormatText",
-					Source = "Output",
-				},
-				Name6 = Input { Value = "1920 x 1080", },
-				Input6 = Input {
-					SourceOp = "tCheckFramerate",
-					Source = "Output",
-				},
-				Name7 = Input { Value = "3840 x 2160", },
-				Input7 = Input {
-					SourceOp = "tCheckFormatText",
-					Source = "Output",
-				}
-			},
-			ViewInfo = OperatorInfo { Pos = { 248.336, 44.7105 } },
-			Colors = { TileColor = { R = 0.372549019607843, G = 0.6, B = 0.125490196078431 }, },
-			UserControls = ordered() { w = { INP_MaxAllowed = 1000000, INP_Integer = false, INPID_InputControl = "SliderControl", INP_MaxScale = 1, INP_MinScale = 0, INP_MinAllowed = -1000000, LINKID_DataType = "Number", ICS_ControlPage = "Controls", INP_SplineType = "Default", LINKS_Name = "Width (w)" }, h = { INP_MaxAllowed = 1000000, INP_Integer = false, INPID_InputControl = "SliderControl", INP_MaxScale = 1, INP_MinScale = 0, INP_MinAllowed = -1000000, LINKID_DataType = "Number", ICS_ControlPage = "Controls", INP_SplineType = "Default", LINKS_Name = "Height (h)" } }
-		}
 	}
 }

@@ -33,7 +33,7 @@
 					ICS_ControlPage = "Color",
 				},
 				InfoTitle = {
-					LINKS_Name = "/!\\ IMAGE SIZEE is set in COLOR TAB /!\\",
+					LINKS_Name = "/!\\ IMAGE SIZE is set in COLOR TAB /!\\",
 					LINKID_DataType = "Number",
 					LBLC_DropDownButton = false,
 					INPID_InputControl = "LabelControl",
