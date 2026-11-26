@@ -22,14 +22,10 @@
 				anchorPointVerticalAbs = Input { Expression = "-(RefSize1.Output.DataWindow[2]+1)/refWidth", },
 				lineSpacingPx = Input { Expression = "refWidth*0.8", },
 
-				CanvasSizeInputs = Input { Expression = "iif(CanvasSizeReference == 1,1,0)", }, -- Show hide
-				CompWidth = Input { Expression = 'comp:GetPrefs(\"Comp.FrameFormat.Width\")' },
-				CompHeight = Input { Expression = 'comp:GetPrefs(\"Comp.FrameFormat.Height\")' },
-
-				refWidth = Input { Expression = "iif(CanvasSizeReference == 1, CanvasWidth, CompWidth)", },
+				refWidth = Input { Expression = "tTextCalculator.Width", },
 			},
 			ViewInfo = GroupInfo {
-				Pos = { 165, 49.5 },
+				Pos = { 165, 50 },
 				Flags = {
 					AllowPan = false,
 					GridSnap = true,
@@ -50,21 +46,18 @@
 					NameSet = true,
 					Inputs = {
 						GlobalOut = Input { Value = 119, },
-
 						-- Size reference
 						Width = Input { 
 							Value = 1920,
-							Expression = "iif(data_tTextCalculator.CanvasSizeReference == 1, data_tTextCalculator.CanvasWidth, data_tTextCalculator.CompWidth)",
+							Expression = "tTextCalculator.Width",
 						},
 						Height = Input { 
 							Value = 1080,
-							Expression = "iif(data_tTextCalculator.CanvasSizeReference == 1, data_tTextCalculator.CanvasHeight, data_tTextCalculator.CompHeight)",
+							Expression = "tTextCalculator.Height",
 						},
 						UseFrameFormatSettings = Input { 
-							Value = 1,
-							Expression = "iif(data_tTextCalculator.CanvasSizeReference == 1,0,1)",
+							Value = 0,
 						},
-
 						["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
 						Wrap = Input { Value = 1, },
 						Center = Input { Value = { 0, 0 }, },
@@ -124,81 +117,6 @@
 					INP_MaxAllowed = 1000000,
 					INP_SplineType = "Default",
 					ICS_ControlPage = "Controls",
-				},
-				CanvasSizeReference = { -- User input
-					LINKS_Name = "Canvas Size",
-					LINKID_DataType = "Number",
-					INPID_InputControl = "MultiButtonControl",
-					INP_Default = 0,
-					INP_Integer = true,
-					INP_SplineType = "Default",
-					{ MBTNC_AddButton = "Auto" },
-					{ MBTNC_AddButton = "Custom" },
-					MBTNC_ShowBasicButton = true,
-					MBTNC_ShowToolTip = false,
-					MBTNC_ShowName = false,
-					MBTNC_StretchToFit = false,
-					INP_External = false,
-					ICS_ControlPage = "Controls",
-				},
-				CanvasSizeInputs = { -- Group
-					LINKS_Name = "CanvasSizeInputs",
-					LINKID_DataType = "Number",
-					INPID_InputControl = "LabelControl",
-					LBLC_DropDownButton = true,
-					LBLC_NumInputs = 2, -- NUMBER OF ELEMENT IN GROUP
-					LBLC_NestLevel = 1,
-					INP_Passive = false,
-					IC_Visible = false,
-					ICS_ControlPage = "Controls",
-				},
-				CanvasWidth = {
-				 	LINKS_Name = "Canvas Width (px)",
-				 	LINKID_DataType = "Number",
-				 	INPID_InputControl = "SliderControl",
-					INP_Default = 1920,
-					INP_Integer = true,
-					INP_MinScale = 1,
-					INP_MaxScale = 4096,
-					INP_MinAllowed = 1,
-					INP_MaxAllowed = 32767,
-					INP_External = false,
-				 	ICS_ControlPage = "Controls",
-				},
-				CanvasHeight = {
-					LINKS_Name = "Canvas Height (px)",
-				 	LINKID_DataType = "Number",
-				 	INPID_InputControl = "SliderControl",
-					INP_Default = 1080,
-					INP_Integer = true,
-					INP_MinScale = 1,
-					INP_MaxScale = 4096,
-					INP_MinAllowed = 1,
-					INP_MaxAllowed = 32767,
-					INP_External = false,
-				 	ICS_ControlPage = "Controls",
-				},
-				CompWidth = {
-				 	LINKS_Name = "width (CompWidth)",
-				 	LINKID_DataType = "Number",
-				 	INPID_InputControl = "SliderControl",
-					INP_Default = 1920,
-				 	INP_MinScale = 0,
-				 	INP_MaxScale = 2000,
-					INP_External = false,
-					IC_Visible = false,
-				 	ICS_ControlPage = "Controls",
-				},
-				CompHeight = {
-				 	LINKS_Name = "height (CompHeight)",
-				 	LINKID_DataType = "Number",
-				 	INPID_InputControl = "SliderControl",
-					INP_Default = 1080,
-				 	INP_MinScale = 0,
-				 	INP_MaxScale = 2000,
-					INP_External = false,
-					IC_Visible = false,
-				 	ICS_ControlPage = "Controls",
 				},
 				refWidth = { -- Output for expressions
 					LINKS_Name = "Comp Width (px)",
@@ -310,15 +228,12 @@
 				-- Size reference
 				Width = Input { 
 					Value = 1920,
-					Expression = "iif(data_tTextCalculator.CanvasSizeReference == 1, data_tTextCalculator.CanvasWidth, data_tTextCalculator.CompWidth)",
 				},
 				Height = Input { 
 					Value = 1080,
-					Expression = "iif(data_tTextCalculator.CanvasSizeReference == 1, data_tTextCalculator.CanvasHeight, data_tTextCalculator.CompHeight)",
 				},
 				UseFrameFormatSettings = Input { 
-					Value = 1,
-					Expression = "iif(data_tTextCalculator.CanvasSizeReference == 1,0,1)",
+					Value = 0,
 				},
 
 				["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
@@ -356,7 +271,7 @@
 
 			},
 			Colors = { TileColor = { R = 0.474509803921569, G = 0.658823529411765, B = 0.815686274509804 }, },
-			ViewInfo = OperatorInfo { Pos = { 165, 82.5 } },
+			ViewInfo = OperatorInfo { Pos = { 165, 82 } },
 			UserControls = ordered() {
                 -- ====================
 				-- == TEXT DATA NEST ==
@@ -482,6 +397,34 @@
 					INP_External = false,
 					ICS_ControlPage = "Text"
 				},
+				title = {
+					LINKS_Name = "Output Size",
+					LINKID_DataType = "Number",
+					LBLC_DropDownButton = false,
+					INPID_InputControl = "LabelControl",
+					INP_External = false,
+					INP_Passive = true,
+					ICS_ControlPage = "Text",
+				},
+				UseFrameFormatSettings  = {
+					LINKS_Name = "Auto Resolution",
+					ICS_ControlPage = "Text",
+				},
+				Width  = {
+					ICS_ControlPage = "Text",
+				},
+				Height  = {
+					ICS_ControlPage = "Text",
+				},
+				InfoTitle = {
+					LINKS_Name = "/!\\ IMAGE SIZE is set in TEXT TAB /!\\",
+					LINKID_DataType = "Number",
+					LBLC_DropDownButton = false,
+					INPID_InputControl = "LabelControl",
+					INP_External = false,
+					INP_Passive = true,
+					ICS_ControlPage = "Image",
+				},
 				
 				Empty_1 = { LINKS_Name = "", LINKID_DataType = "Number", LBLC_DropDownButton = false, INPID_InputControl = "LabelControl", INP_Passive = true, INP_External = false, ICS_ControlPage = "Text",},
 				Info_1 = {
@@ -510,7 +453,155 @@
 					ICS_ControlPage = "Text"
 				},
 			}
+		},
+		tText = TextPlus {
+			CtrlWZoom = false,
+			Inputs = {
+				GlobalOut = Input { Value = 199, },
+				Width = Input { Value = 1920, },
+				Height = Input { Value = 1080, },
+				UseFrameFormatSettings = Input { Value = 0, },
+				["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
+				Wrap = Input { Value = 1, },
+				LayoutRotation = Input { Value = 1, },
+				TransformRotation = Input { Value = 1, },
+				Softness1 = Input { Value = 1, },
+				StyledText = Input { Value = "Lorem ipsum", },
+				Font = Input { Value = "RTS Neue", },
+				Style = Input { Value = "Regular", },
+				VerticalJustificationNew = Input { Value = 3, },
+				HorizontalJustificationNew = Input { Value = 3, },
+				VerticalTopCenterBottom = Input { Value = 1, },
+				HorizontalLeftCenterRight = Input { Value = -1, },
+			},
+			ViewInfo = OperatorInfo { Pos = { 165, 114 } },
+			UserControls = ordered() {
+				TextDataNest = {
+					LINKS_Name = "Other Controls",
+					LINKID_DataType = "Number",
+					INPID_InputControl = "LabelControl",
+					LBLC_DropDownButton = true,
+					LBLC_NumInputs = 6,
+					LBLC_NestLevel = 1,
+					LBLCID_HideUpToID = "Direction",
+					ICS_ControlPage = "Text",
+					INP_External = false,
+					INP_Passive = true
+				},
+				VerticalTopCenterBottom = { ICS_ControlPage = "Text" },
+				VerticallyJustified = { ICS_ControlPage = "Text" },
+				HorizontalLeftCenterRight = { ICS_ControlPage = "Text" },
+				HorizontallyJustified = { ICS_ControlPage = "Text" },
+				Direction = { ICS_ControlPage = "Text" },
+				LineDirection = { ICS_ControlPage = "Text" },
+				
+				title = {
+					LINKS_Name = "Output Size",
+					LINKID_DataType = "Number",
+					LBLC_DropDownButton = false,
+					INPID_InputControl = "LabelControl",
+					INP_External = false,
+					INP_Passive = true,
+					ICS_ControlPage = "Text",
+				},
+				UseFrameFormatSettings  = {
+					LINKS_Name = "Auto Resolution",
+					ICS_ControlPage = "Text",
+				},
+				Width  = {
+					ICS_ControlPage = "Text",
+				},
+				Height  = {
+					ICS_ControlPage = "Text",
+				},
+				InfoTitle = {
+					LINKS_Name = "/!\\ IMAGE SIZE is set in TEXT TAB /!\\",
+					LINKID_DataType = "Number",
+					LBLC_DropDownButton = false,
+					INPID_InputControl = "LabelControl",
+					INP_External = false,
+					INP_Passive = true,
+					ICS_ControlPage = "Image",
+				},
+
+				Empty_1 = { LINKS_Name = "", LINKID_DataType = "Number", LBLC_DropDownButton = false, INPID_InputControl = "LabelControl", INP_Passive = true, INP_External = false, ICS_ControlPage = "Text",},
+				Update = {
+					LINKS_Name = "Update Size from TextCalculator",
+					LINKID_DataType = "Number",
+					INPID_InputControl = "ButtonControl",
+					INP_Default = 1,
+					INP_Integer = false,
+					INP_MinScale = 0,
+					INP_MaxScale = 1,
+					INP_MinAllowed = -1000000,
+					INP_MaxAllowed = 1000000,
+					INP_SplineType = "Default",
+					BTNCS_Execute = [=[
+						print('\n' .. '--- Updating Text+ from tTextCalculator ---')
+
+						-- Check if the node tTextCalculator exists, if not exit
+						local tTextCalculator = comp:FindTool("tTextCalculator")
+						if not tTextCalculator then
+							print('no tTextCalculator found')
+							return
+						end
+						
+						local Width = tTextCalculator:GetInput("Width")
+						if Width then
+							print("new Width = ", tTextCalculator:GetInput("Width"))
+							tool:SetInput("Width", Width)
+						end
+						local Height = tTextCalculator:GetInput("Height")
+						if Height then
+							print("new Height = ", tTextCalculator:GetInput("Height"))
+							tool:SetInput("Height", Height)
+						end
+						local UseFrameFormatSettings = tTextCalculator:GetInput("UseFrameFormatSettings")
+						if UseFrameFormatSettings then
+							print("new UseFrameFormatSettings = ", tTextCalculator:GetInput("UseFrameFormatSettings"))
+							tool:SetInput("UseFrameFormatSettings", UseFrameFormatSettings)
+						end
+
+						local Font = tTextCalculator:GetInput("Font")
+						if Font then
+							print("new Font = ", tTextCalculator:GetInput("Font"))
+							tool:SetInput("Font", Font)
+						end
+						local Style = tTextCalculator:GetInput("Style")
+						if Style then
+							print("new Style = ", tTextCalculator:GetInput("Style"))
+							tool:SetInput("Style", Style)
+						end
+
+						local Size = tTextCalculator:GetInput("Size")
+						if Size then
+							print("new Size = ", tTextCalculator:GetInput("Size"))
+							tool:SetInput("Size", Size)
+						end
+
+						local CharacterSpacingClone = tTextCalculator:GetInput("CharacterSpacingClone")
+						if CharacterSpacingClone then
+							print("new Tracking = ", tTextCalculator:GetInput("CharacterSpacingClone"))
+							tool:SetInput("CharacterSpacingClone", CharacterSpacingClone)
+						end
+
+						local LineSpacingClone = tTextCalculator:GetInput("LineSpacingClone")
+						if LineSpacingClone then
+							print("new Line Spacing = ", tTextCalculator:GetInput("LineSpacingClone"))
+							tool:SetInput("LineSpacingClone", LineSpacingClone)
+						end
+
+						local offset = tTextCalculator:GetInput("CharacterOffset")
+						if offset then
+							print("new Offset X = ", offset[1] or offset.X)
+							print("new Offset Y = ", offset[2] or offset.Y)
+    						tool:SetInput("CharacterOffset", offset)
+						end
+					]=],
+					ICS_ControlPage = "Text",
+					INP_External = false
+				}
+			}
 		}
 	},
-	ActiveTool = "tTextCalculator"
 }

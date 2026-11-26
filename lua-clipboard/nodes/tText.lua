@@ -6,7 +6,7 @@
 				GlobalOut = Input { Value = 199, },
 				Width = Input { Value = 1920, },
 				Height = Input { Value = 1080, },
-				UseFrameFormatSettings = Input { Value = 1, },
+				UseFrameFormatSettings = Input { Value = 0, },
 				["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
 				Wrap = Input { Value = 1, },
 				LayoutRotation = Input { Value = 1, },
@@ -91,13 +91,28 @@
 							print('no tTextCalculator found')
 							return
 						end
-				
+						
+						local Width = tTextCalculator:GetInput("Width")
+						if Width then
+							print("new Width = ", tTextCalculator:GetInput("Width"))
+							tool:SetInput("Width", Width)
+						end
+						local Height = tTextCalculator:GetInput("Height")
+						if Height then
+							print("new Height = ", tTextCalculator:GetInput("Height"))
+							tool:SetInput("Height", Height)
+						end
+						local UseFrameFormatSettings = tTextCalculator:GetInput("UseFrameFormatSettings")
+						if UseFrameFormatSettings then
+							print("new UseFrameFormatSettings = ", tTextCalculator:GetInput("UseFrameFormatSettings"))
+							tool:SetInput("UseFrameFormatSettings", UseFrameFormatSettings)
+						end
+
 						local Font = tTextCalculator:GetInput("Font")
 						if Font then
 							print("new Font = ", tTextCalculator:GetInput("Font"))
 							tool:SetInput("Font", Font)
 						end
-						
 						local Style = tTextCalculator:GetInput("Style")
 						if Style then
 							print("new Style = ", tTextCalculator:GetInput("Style"))
